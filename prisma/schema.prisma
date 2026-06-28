@@ -1,525 +1,67 @@
-generator client {
-  provider = "prisma-client-js"
-}
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum Role {
-  GUEST
-  CUSTOMER
-  MEMBER
-  SELLER
-  FULFILLMENT
-  SUPPORT
-  MODERATOR
-  MARKETING
-  FINANCE
-  ADMIN
-}
-
-enum SellerStatus {
-  PENDING
-  APPROVED
-  SUSPENDED
-}
-
-enum FulfillmentType {
-  AstraFulfilled
-  SellerFulfilled
-}
-
-enum OrderStatus {
-  PENDING_PAYMENT
-  PAID
-  PROCESSING
-  SHIPPED
-  DELIVERED
-  CANCELLED
-  RETURN_REQUESTED
-  RETURNED
-  REFUNDED
-}
-
-enum TicketStatus {
-  OPEN
-  PENDING
-  RESOLVED
-}
-
-enum ReturnStatus {
-  REQUESTED
-  APPROVED
-  RECEIVED
-  REJECTED
-  REFUNDED
-}
+enum Role { GUEST CUSTOMER MEMBER SELLER FULFILLMENT SUPPORT MODERATOR MARKETING FINANCE ADMIN }
+enum SellerStatus { PENDING APPROVED SUSPENDED }
+enum FulfillmentType { AstraFulfilled SellerFulfilled }
+enum OrderStatus { PENDING_PAYMENT PAID PROCESSING SHIPPED DELIVERED CANCELLED RETURN_REQUESTED RETURNED REFUNDED }
+enum TicketStatus { OPEN PENDING RESOLVED }
+enum ReturnStatus { REQUESTED APPROVED RECEIVED REJECTED REFUNDED }
 
 model User {
-  id              String            @id @default(cuid())
-  email           String            @unique
-  name            String
-  passwordHash    String
-  roles           UserRole[]
-  addresses       Address[]
-  paymentMethods  PaymentMethod[]
-  carts           Cart[]
-  wishlists       Wishlist[]
-  orders          Order[]
-  reviews         Review[]
-  questions       ProductQuestion[]
-  notifications   Notification[]
-  supportTickets  SupportTicket[]
-  auditLogs       AuditLog[]        @relation("ActorAudits")
-  subscriptions   Subscription[]
-  giftCards       GiftCard[]
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-}
-
-model UserRole {
-  id     String @id @default(cuid())
-  role   Role
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  @@unique([userId, role])
-}
-
-model Address {
-  id         String  @id @default(cuid())
-  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
-  name       String
-  line1      String
-  line2      String?
-  city       String
-  region     String
-  postalCode String
-  country    String
-  phone      String?
-  isDefault  Boolean @default(false)
-}
-
-model PaymentMethod {
-  id        String  @id @default(cuid())
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  provider  String
-  tokenRef  String
-  brand     String?
-  last4     String?
-  expMonth  Int?
-  expYear   Int?
-  isDefault Boolean @default(false)
-}
-
-model Seller {
-  id                 String              @id @default(cuid())
-  storeName          String              @unique
-  status             SellerStatus        @default(PENDING)
-  rating             Float               @default(0)
-  payoutBalance      Decimal             @default(0)
-  products           Product[]
-  orderItems         OrderItem[]
-  sponsoredCampaigns SponsoredCampaign[]
-  createdAt          DateTime            @default(now())
-}
-
-model Brand {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  products Product[]
-}
-
-model Category {
-  id       String     @id @default(cuid())
-  name     String
-  parentId String?
-  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryTree")
-  products Product[]
-}
-
-model Product {
-  id               String              @id @default(cuid())
-  slug             String              @unique
-  title            String
-  description      String
-  brand            Brand               @relation(fields: [brandId], references: [id])
-  brandId          String
-  seller           Seller              @relation(fields: [sellerId], references: [id])
-  sellerId         String
-  category         Category            @relation(fields: [categoryId], references: [id])
-  categoryId       String
-  price            Decimal
-  listPrice        Decimal
-  stock            Int
-  sku              String              @unique
-  fulfillment      FulfillmentType
-  images           ProductImage[]
-  variants         ProductVariant[]
-  reviews          Review[]
-  questions        ProductQuestion[]
-  orderItems       OrderItem[]
-  cartItems        CartItem[]
-  wishlistItems    WishlistItem[]
-  isActive         Boolean             @default(true)
-  moderationStatus String              @default("APPROVED")
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
-
-  @@index([slug])
-  @@index([categoryId])
-  @@index([sellerId])
-}
-
-model ProductImage {
-  id        String  @id @default(cuid())
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-  url       String
-  alt       String?
-  position  Int     @default(0)
-}
-
-model ProductVariant {
-  id         String  @id @default(cuid())
-  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId  String
-  name       String
-  value      String
-  sku        String?
-  priceDelta Decimal @default(0)
-  stock      Int     @default(0)
-}
-
-model Cart {
-  id        String     @id @default(cuid())
-  user      User?      @relation(fields: [userId], references: [id])
-  userId    String?
-  sessionId String?
-  items     CartItem[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-model CartItem {
-  id        String  @id @default(cuid())
-  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  cartId    String
-  product   Product @relation(fields: [productId], references: [id])
-  productId String
-  quantity  Int
-}
-
-model Wishlist {
-  id       String         @id @default(cuid())
-  name     String
-  user     User?          @relation(fields: [userId], references: [id])
-  userId   String?
-  items    WishlistItem[]
-  isPublic Boolean        @default(false)
-}
-
-model WishlistItem {
-  id         String   @id @default(cuid())
-  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
-  wishlistId String
-  product    Product  @relation(fields: [productId], references: [id])
-  productId  String
-}
-
-model Coupon {
-  id          String    @id @default(cuid())
-  code        String    @unique
-  type        String
-  value       Decimal
-  minSubtotal Decimal   @default(0)
-  startsAt    DateTime?
-  endsAt      DateTime?
-  active      Boolean   @default(true)
-}
-
-model Promotion {
-  id        String   @id @default(cuid())
-  name      String
-  placement String
-  startsAt  DateTime
-  endsAt    DateTime
-  active    Boolean  @default(false)
-  config    Json
-}
-
-model Order {
-  id             String          @id @default(cuid())
-  user           User            @relation(fields: [userId], references: [id])
-  userId         String
-  status         OrderStatus     @default(PENDING_PAYMENT)
-  subtotal       Decimal
-  shipping       Decimal
-  tax            Decimal
-  discount       Decimal
-  total          Decimal
-  couponCode     String?
-  items          OrderItem[]
-  shipments      Shipment[]
-  returns        ReturnRequest[]
-  refunds        Refund[]
+  id String @id @default(cuid())
+  email String @unique
+  name String
+  passwordHash String
+  roles UserRole[]
+  addresses Address[]
+  paymentMethods PaymentMethod[]
+  carts Cart[]
+  orders Order[]
+  reviews Review[]
+  questions ProductQuestion[]
+  notifications Notification[]
   supportTickets SupportTicket[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-
-  @@index([userId, createdAt])
-}
-
-model OrderItem {
-  id                String  @id @default(cuid())
-  order             Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId           String
-  product           Product @relation(fields: [productId], references: [id])
-  productId         String
-  seller            Seller  @relation(fields: [sellerId], references: [id])
-  sellerId          String
-  titleSnapshot     String
-  unitPrice         Decimal
-  quantity          Int
-  fulfillmentStatus String  @default("PENDING")
-}
-
-model Shipment {
-  id             String    @id @default(cuid())
-  order          Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId        String
-  carrier        String
-  trackingNumber String
-  status         String
-  shippedAt      DateTime?
-  deliveredAt    DateTime?
-}
-
-model ReturnRequest {
-  id        String       @id @default(cuid())
-  order     Order        @relation(fields: [orderId], references: [id])
-  orderId   String
-  reason    String
-  status    ReturnStatus @default(REQUESTED)
-  rma       String       @unique
-  createdAt DateTime     @default(now())
-}
-
-model Refund {
-  id          String   @id @default(cuid())
-  order       Order    @relation(fields: [orderId], references: [id])
-  orderId     String
-  amount      Decimal
-  providerRef String?
-  status      String
-  createdAt   DateTime @default(now())
-}
-
-model Review {
-  id        String       @id @default(cuid())
-  product   Product      @relation(fields: [productId], references: [id])
-  productId String
-  user      User         @relation(fields: [userId], references: [id])
-  userId    String
-  rating    Int
-  title     String
-  body      String
-  status    String       @default("PUBLISHED")
-  votes     ReviewVote[]
-  createdAt DateTime     @default(now())
-}
-
-model ReviewVote {
-  id       String  @id @default(cuid())
-  review   Review  @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  reviewId String
-  userId   String
-  helpful  Boolean
-
-  @@unique([reviewId, userId])
-}
-
-model ProductQuestion {
-  id        String          @id @default(cuid())
-  product   Product         @relation(fields: [productId], references: [id])
-  productId String
-  user      User?           @relation(fields: [userId], references: [id])
-  userId    String?
-  question  String
-  answers   ProductAnswer[]
-  createdAt DateTime        @default(now())
-}
-
-model ProductAnswer {
-  id         String          @id @default(cuid())
-  question   ProductQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  questionId String
-  answer     String
-  sellerId   String?
-  userId     String?
-  createdAt  DateTime        @default(now())
-}
-
-model GiftCard {
-  id             String  @id @default(cuid())
-  code           String  @unique
-  balance        Decimal
-  originalAmount Decimal
-  user           User?   @relation(fields: [userId], references: [id])
-  userId         String?
-  active         Boolean @default(true)
-}
-
-model Subscription {
-  id       String    @id @default(cuid())
-  user     User?     @relation(fields: [userId], references: [id])
-  userId   String?
-  plan     String
-  status   String
-  renewsAt DateTime?
-  benefits Json
-}
-
-model SupportTicket {
-  id        String           @id @default(cuid())
-  user      User?            @relation(fields: [userId], references: [id])
-  userId    String?
-  order     Order?           @relation(fields: [orderId], references: [id])
-  orderId   String?
-  subject   String
-  status    TicketStatus     @default(OPEN)
-  priority  String           @default("NORMAL")
-  messages  SupportMessage[]
-  createdAt DateTime         @default(now())
-}
-
-model SupportMessage {
-  id        String        @id @default(cuid())
-  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  ticketId  String
-  senderId  String?
-  body      String
-  createdAt DateTime      @default(now())
-}
-
-model Notification {
-  id        String    @id @default(cuid())
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  channel   String
-  event     String
-  payload   Json
-  readAt    DateTime?
-  createdAt DateTime  @default(now())
-}
-
-model AuditLog {
-  id        String   @id @default(cuid())
-  actor     User?    @relation("ActorAudits", fields: [actorId], references: [id])
-  actorId   String?
-  action    String
-  entity    String
-  entityId  String?
-  metadata  Json
+  auditLogs AuditLog[] @relation("ActorAudits")
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model SearchLog {
-  id          String   @id @default(cuid())
-  query       String
-  resultCount Int
-  userId      String?
-  createdAt   DateTime @default(now())
+model UserRole { id String @id @default(cuid()) role Role user User @relation(fields: [userId], references: [id], onDelete: Cascade) userId String @@unique([userId, role]) }
+model Address { id String @id @default(cuid()) user User @relation(fields: [userId], references: [id], onDelete: Cascade) userId String name String line1 String line2 String? city String region String postalCode String country String phone String? isDefault Boolean @default(false) }
+model PaymentMethod { id String @id @default(cuid()) user User @relation(fields: [userId], references: [id], onDelete: Cascade) userId String provider String tokenRef String brand String? last4 String? expMonth Int? expYear Int? isDefault Boolean @default(false) }
+model Seller { id String @id @default(cuid()) storeName String @unique status SellerStatus @default(PENDING) rating Float @default(0) payoutBalance Decimal @default(0) products Product[] orders OrderItem[] createdAt DateTime @default(now()) }
+model Brand { id String @id @default(cuid()) name String @unique products Product[] }
+model Category { id String @id @default(cuid()) name String parentId String? parent Category? @relation("CategoryTree", fields: [parentId], references: [id]) children Category[] @relation("CategoryTree") products Product[] }
+model Product {
+  id String @id @default(cuid()) slug String @unique title String description String brand Brand @relation(fields: [brandId], references: [id]) brandId String seller Seller @relation(fields: [sellerId], references: [id]) sellerId String category Category @relation(fields: [categoryId], references: [id]) categoryId String price Decimal listPrice Decimal stock Int sku String @unique fulfillment FulfillmentType images ProductImage[] variants ProductVariant[] reviews Review[] questions ProductQuestion[] orderItems OrderItem[] cartItems CartItem[] wishlistItems WishlistItem[] isActive Boolean @default(true) moderationStatus String @default("APPROVED") createdAt DateTime @default(now()) updatedAt DateTime @updatedAt
+  @@index([slug]) @@index([categoryId]) @@index([sellerId])
 }
-
-model RecommendationEvent {
-  id        String   @id @default(cuid())
-  userId    String?
-  productId String?
-  event     String
-  createdAt DateTime @default(now())
-}
-
-model CmsPage {
-  id        String  @id @default(cuid())
-  slug      String  @unique
-  title     String
-  body      String
-  published Boolean @default(false)
-}
-
-model HomepageModule {
-  id       String  @id @default(cuid())
-  title    String
-  type     String
-  config   Json
-  position Int
-  active   Boolean @default(true)
-}
-
-model FeatureFlag {
-  id      String  @id @default(cuid())
-  key     String  @unique
-  enabled Boolean @default(false)
-  config  Json?
-}
-
-model WarehouseInventory {
-  id            String   @id @default(cuid())
-  productId     String
-  warehouseCode String
-  available     Int      @default(0)
-  reserved      Int      @default(0)
-  damaged       Int      @default(0)
-  updatedAt     DateTime @updatedAt
-
-  @@unique([productId, warehouseCode])
-}
-
-model SponsoredCampaign {
-  id        String    @id @default(cuid())
-  seller    Seller?   @relation(fields: [sellerId], references: [id])
-  sellerId  String?
-  name      String
-  budget    Decimal
-  spend     Decimal   @default(0)
-  status    String    @default("PENDING_REVIEW")
-  keywords  Json
-  startsAt  DateTime?
-  endsAt    DateTime?
-  createdAt DateTime  @default(now())
-}
-
-model SupportMacro {
-  id        String   @id @default(cuid())
-  title     String
-  body      String
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-}
-
-model SearchMerchandisingRule {
-  id        String   @id @default(cuid())
-  query     String
-  action    String
-  config    Json
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-}
-
-model AnalyticsEvent {
-  id        String   @id @default(cuid())
-  type      String
-  userId    String?
-  productId String?
-  sessionId String?
-  metadata  Json
-  createdAt DateTime @default(now())
-
-  @@index([type, createdAt])
-}
+model ProductImage { id String @id @default(cuid()) product Product @relation(fields: [productId], references: [id], onDelete: Cascade) productId String url String alt String? position Int @default(0) }
+model ProductVariant { id String @id @default(cuid()) product Product @relation(fields: [productId], references: [id], onDelete: Cascade) productId String name String value String sku String? priceDelta Decimal @default(0) stock Int @default(0) }
+model Cart { id String @id @default(cuid()) user User? @relation(fields: [userId], references: [id]) userId String? sessionId String? items CartItem[] createdAt DateTime @default(now()) updatedAt DateTime @updatedAt }
+model CartItem { id String @id @default(cuid()) cart Cart @relation(fields: [cartId], references: [id], onDelete: Cascade) cartId String product Product @relation(fields: [productId], references: [id]) productId String quantity Int }
+model Wishlist { id String @id @default(cuid()) name String userId String items WishlistItem[] isPublic Boolean @default(false) }
+model WishlistItem { id String @id @default(cuid()) wishlist Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade) wishlistId String product Product @relation(fields: [productId], references: [id]) productId String }
+model Coupon { id String @id @default(cuid()) code String @unique type String value Decimal minSubtotal Decimal @default(0) startsAt DateTime? endsAt DateTime? active Boolean @default(true) }
+model Promotion { id String @id @default(cuid()) name String placement String startsAt DateTime endsAt DateTime active Boolean @default(false) config Json }
+model Order { id String @id @default(cuid()) user User @relation(fields: [userId], references: [id]) userId String status OrderStatus @default(PENDING_PAYMENT) subtotal Decimal shipping Decimal tax Decimal discount Decimal total Decimal couponCode String? items OrderItem[] shipments Shipment[] returns ReturnRequest[] refunds Refund[] createdAt DateTime @default(now()) updatedAt DateTime @updatedAt @@index([userId, createdAt]) }
+model OrderItem { id String @id @default(cuid()) order Order @relation(fields: [orderId], references: [id], onDelete: Cascade) orderId String product Product @relation(fields: [productId], references: [id]) productId String seller Seller @relation(fields: [sellerId], references: [id]) sellerId String titleSnapshot String unitPrice Decimal quantity Int fulfillmentStatus String @default("PENDING") }
+model Shipment { id String @id @default(cuid()) order Order @relation(fields: [orderId], references: [id], onDelete: Cascade) orderId String carrier String trackingNumber String status String shippedAt DateTime? deliveredAt DateTime? }
+model ReturnRequest { id String @id @default(cuid()) order Order @relation(fields: [orderId], references: [id]) orderId String reason String status ReturnStatus @default(REQUESTED) rma String @unique createdAt DateTime @default(now()) }
+model Refund { id String @id @default(cuid()) order Order @relation(fields: [orderId], references: [id]) orderId String amount Decimal providerRef String? status String createdAt DateTime @default(now()) }
+model Review { id String @id @default(cuid()) product Product @relation(fields: [productId], references: [id]) productId String user User @relation(fields: [userId], references: [id]) userId String rating Int title String body String status String @default("PUBLISHED") votes ReviewVote[] createdAt DateTime @default(now()) }
+model ReviewVote { id String @id @default(cuid()) review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade) reviewId String userId String helpful Boolean @@unique([reviewId, userId]) }
+model ProductQuestion { id String @id @default(cuid()) product Product @relation(fields: [productId], references: [id]) productId String user User? @relation(fields: [userId], references: [id]) userId String? question String answers ProductAnswer[] createdAt DateTime @default(now()) }
+model ProductAnswer { id String @id @default(cuid()) question ProductQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade) questionId String answer String sellerId String? userId String? createdAt DateTime @default(now()) }
+model GiftCard { id String @id @default(cuid()) code String @unique balance Decimal originalAmount Decimal userId String? active Boolean @default(true) }
+model Subscription { id String @id @default(cuid()) userId String plan String status String renewsAt DateTime? benefits Json }
+model SupportTicket { id String @id @default(cuid()) user User? @relation(fields: [userId], references: [id]) userId String? subject String status TicketStatus @default(OPEN) priority String @default("NORMAL") messages SupportMessage[] orderId String? createdAt DateTime @default(now()) }
+model SupportMessage { id String @id @default(cuid()) ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade) ticketId String senderId String? body String createdAt DateTime @default(now()) }
+model Notification { id String @id @default(cuid()) user User @relation(fields: [userId], references: [id], onDelete: Cascade) userId String channel String event String payload Json readAt DateTime? createdAt DateTime @default(now()) }
+model AuditLog { id String @id @default(cuid()) actor User? @relation("ActorAudits", fields: [actorId], references: [id]) actorId String? action String entity String entityId String? metadata Json createdAt DateTime @default(now()) }
+model SearchLog { id String @id @default(cuid()) query String resultCount Int userId String? createdAt DateTime @default(now()) }
+model RecommendationEvent { id String @id @default(cuid()) userId String? productId String event String createdAt DateTime @default(now()) }
+model CmsPage { id String @id @default(cuid()) slug String @unique title String body String published Boolean @default(false) }
+model HomepageModule { id String @id @default(cuid()) title String type String config Json position Int active Boolean @default(true) }
+model FeatureFlag { id String @id @default(cuid()) key String @unique enabled Boolean @default(false) config Json? }
