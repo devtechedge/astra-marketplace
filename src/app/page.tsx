@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
 import { DashboardCard } from '@/components/DashboardCard';
 import { categories, products } from '@/lib/demoData';
+import { RecommendationRow } from '@/components/commerce/RecommendationRow';
+import { buyAgainRecommendations, recentlyViewedFallback, trendingProducts } from '@/lib/services/recommendations';
 
 export default function HomePage() {
   return (
@@ -14,6 +16,9 @@ export default function HomePage() {
       </section>
       <section className="container-page -mt-8 grid gap-4 md:grid-cols-5">{categories.slice(0,5).map(c => <Link href={`/search?department=${encodeURIComponent(c)}`} key={c} className="rounded-3xl bg-white p-6 text-center font-black shadow-card hover:text-brand">{c}</Link>)}</section>
       <section className="container-page py-14"><div className="mb-6 flex items-end justify-between"><div><p className="font-bold text-coral">Deals and recommendations</p><h2 className="text-3xl font-black">Featured products</h2></div><Link href="/deals" className="font-bold text-brand">View all deals</Link></div><div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{products.map(p => <ProductCard key={p.id} product={p} />)}</div></section>
+      <RecommendationRow title="Buy again" subtitle="Fast shortcuts based on previous orders." products={buyAgainRecommendations()} />
+      <RecommendationRow title="Trending near you" subtitle="Ranked by marketplace activity, ratings and availability." products={trendingProducts().slice(0,4)} />
+      <RecommendationRow title="Recently viewed" subtitle="Demo personalized browsing row." products={recentlyViewedFallback()} />
       <section className="container-page grid gap-6 md:grid-cols-3"><div className="rounded-3xl bg-white p-7 shadow-card"><h3 className="text-xl font-black">AstraPlus</h3><p className="mt-2 text-slate-600">Member benefits, free shipping flags, exclusive deals and subscription dashboard.</p></div><div className="rounded-3xl bg-white p-7 shadow-card"><h3 className="text-xl font-black">Secure checkout</h3><p className="mt-2 text-slate-600">Mock payment abstraction, inventory checks, coupons, taxes and order confirmation.</p></div><div className="rounded-3xl bg-white p-7 shadow-card"><h3 className="text-xl font-black">Ops-ready</h3><p className="mt-2 text-slate-600">Admin moderation, support tickets, audits, seller analytics and deployment docs.</p></div></section>
     </div>
   );

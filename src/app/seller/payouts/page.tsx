@@ -1,0 +1,3 @@
+import { SellerNav } from '@/components/seller/SellerNav';
+import { formatMoney } from '@/lib/commerce';
+export default function SellerPayoutsPage() { const rows = [['Order settlement','+149.99'], ['Referral fee','-12.00'], ['Fulfillment fee','-5.40'], ['Refund reserve','-18.99']]; return <div className="container-page py-10"><SellerNav /><h1 className="text-4xl font-black">Payout ledger</h1><div className="mt-8 rounded-3xl bg-white p-6 shadow-card"><p className="text-sm font-bold uppercase text-slate-500">Next payout</p><p className="text-4xl font-black text-emerald-700">{formatMoney(12450.77)}</p><div className="mt-6 divide-y">{rows.map(([a,b]) => <div key={a} className="flex justify-between py-3"><span>{a}</span><strong>{b}</strong></div>)}</div></div></div>; }

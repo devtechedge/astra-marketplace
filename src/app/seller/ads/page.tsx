@@ -1,0 +1,3 @@
+import { SellerNav } from '@/components/seller/SellerNav';
+import { SponsoredCampaignCard } from '@/components/ads/SponsoredCampaignCard';
+export default function SellerAdsPage() { return <div className="container-page py-10"><SellerNav /><h1 className="text-4xl font-black">Sponsored product campaigns</h1><p className="mt-2 text-slate-600">Keyword targeting, budgets, impressions, clicks and spend reporting.</p><div className="mt-8 grid gap-5 md:grid-cols-3"><SponsoredCampaignCard name="Headphones keyword campaign" budget={300} spend={121} status="Live" /><SponsoredCampaignCard name="Camera bundle boost" budget={180} spend={44} status="Learning" /><SponsoredCampaignCard name="Retarget cart abandoners" budget={250} spend={200} status="Live" /></div></div>; }

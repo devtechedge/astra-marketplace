@@ -1,0 +1,3 @@
+import Link from 'next/link';
+const links = [['Dashboard','/seller'], ['Onboarding','/seller/onboarding'], ['Products','/seller/products'], ['Orders','/seller/orders'], ['Promotions','/seller/promotions'], ['Payouts','/seller/payouts'], ['Support','/seller/support'], ['Ads','/seller/ads'], ['New Listing','/seller/products/new']];
+export function SellerNav() { return <nav className="mb-8 flex gap-2 overflow-x-auto rounded-3xl bg-white p-2 shadow-card">{links.map(([label, href]) => <Link key={href} href={href} className="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-bold hover:bg-emerald-50 hover:text-mint">{label}</Link>)}</nav>; }

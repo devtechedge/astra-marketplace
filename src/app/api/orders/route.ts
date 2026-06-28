@@ -26,5 +26,5 @@ export async function POST(req: Request) {
     tracking: `ASTRA${Math.floor(Math.random() * 900000 + 100000)}`,
     createdAt: new Date().toISOString()
   };
-  return NextResponse.json({ order, events: ['payment.authorized', 'inventory.reserved', 'notification.queued'] }, { status: 201 });
+  return NextResponse.json({ order, events: ['payment.intent.created', 'payment.authorized', 'inventory.reserved', 'notification.queued', 'audit.created'], idempotencyKey: req.headers.get('idempotency-key') || `idem-${Date.now()}` }, { status: 201 });
 }

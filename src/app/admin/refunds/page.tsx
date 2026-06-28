@@ -1,0 +1,4 @@
+import { AdminNav } from '@/components/admin/AdminNav';
+import { returnRequests } from '@/lib/expansionData';
+import { formatMoney } from '@/lib/commerce';
+export default function AdminRefundsPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Returns and refund approvals</h1><div className="mt-6 space-y-4">{returnRequests.map(r => <article key={r.id} className="rounded-3xl bg-white p-6 shadow-card"><div className="flex justify-between"><div><h2 className="font-black">{r.rma}</h2><p className="text-slate-600">{r.productTitle} · {r.reason}</p></div><strong>{formatMoney(r.amount)}</strong></div><div className="mt-4 flex gap-3"><button className="rounded-full bg-emerald-600 px-5 py-2 font-bold text-white">Approve refund</button><button className="rounded-full border px-5 py-2 font-bold">Inspect return</button></div></article>)}</div></div>; }

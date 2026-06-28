@@ -1,0 +1,3 @@
+export function ShipmentTimeline({ steps = ['Order placed', 'Payment confirmed', 'Packed', 'Shipped', 'Out for delivery'] }: { steps?: string[] }) {
+  return <div className="rounded-3xl bg-white p-6 shadow-card"><h2 className="text-2xl font-black">Shipment timeline</h2><div className="mt-5 space-y-4">{steps.map((s, i) => <div key={s} className="flex gap-3"><span className="grid size-8 place-items-center rounded-full bg-emerald-600 text-sm font-black text-white">{i+1}</span><div><p className="font-bold">{s}</p><p className="text-sm text-slate-500">{i === steps.length - 1 ? 'Current status' : 'Completed'}</p></div></div>)}</div></div>;
+}

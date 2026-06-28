@@ -6,6 +6,23 @@ AstraMart is a production-style, Amazon-inspired marketplace implementation with
 
 ## Feature Coverage
 
+
+## Production-Level Expansion Added
+
+This version now includes additional production-style marketplace workflows from `docs/PRODUCTION_EXPANSION_IMPLEMENTED.md`:
+
+- Search autocomplete and suggestion API
+- Personalized homepage rows: buy again, trending, recently viewed
+- Richer product page with seller offer comparison, protection plan placeholder, review histogram and verified badges
+- Expanded account center with addresses, payment wallet, privacy, notifications, browsing history, gift cards and wishlist pages
+- Six-step checkout model with payment-intent/idempotency event simulation
+- RMA-style returns workflow and refund queue
+- Seller onboarding, product manager, order queue, promotions, payouts and compliance/support pages
+- Admin user, seller, product, promotion, support, refund, audit, CMS, feature flag and analytics modules
+- Health, notification, wishlist, return, seller and admin API endpoints
+- GitHub Actions CI workflow for typecheck, lint, tests and build
+
+
 ### Customer storefront
 - Home page, categories, deals, search, filters and sorting
 - Product detail pages with image gallery, variants, specs, delivery, seller info, buy box, add to cart, buy now, wishlist placeholder, Q&A and reviews
@@ -46,6 +63,25 @@ AstraMart is a production-style, Amazon-inspired marketplace implementation with
 | Admin | `admin@demo.com` | `Demo123!` |
 
 The current UI uses demo-mode data so reviewers can browse immediately. API login validates these credentials.
+
+
+## Even Closer Production-Parity Expansion
+
+This final expansion adds architecture and workflows from `docs/EVEN_CLOSER_PARITY_IMPLEMENTED.md`:
+
+- Service/repository architecture for auth, catalog, search, cart, checkout, fulfillment, returns, refunds, seller, admin, notifications, analytics and audit
+- Middleware with security headers, route protection and secure demo cookies
+- Register, forgot password, reset password and security settings pages
+- 10-step seller product listing wizard with image, variant, inventory, pricing, shipping and compliance sections
+- Category/attribute builder for admin
+- Search merchandising rules and sponsored advertising dashboards
+- Cart merge/summary API, payment intent API and webhook endpoint
+- Fulfillment operations, shipment API and tracking timeline page
+- Support ticket conversation workspace
+- Review and Q&A submission APIs
+- Analytics/recommendation event APIs
+- System health dashboard/API
+- Prisma schema additions for warehouse inventory, sponsored campaigns, support macros, search merchandising rules and analytics events
 
 ## Quick Start
 

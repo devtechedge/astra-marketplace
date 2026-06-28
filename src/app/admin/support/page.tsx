@@ -1,0 +1,3 @@
+import { AdminNav } from '@/components/admin/AdminNav';
+import { tickets } from '@/lib/demoData';
+export default function AdminSupportPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Support ticket console</h1><div className="mt-6 space-y-4">{tickets.map(t => <article key={t.id} className="rounded-3xl bg-white p-6 shadow-card"><h2 className="font-black">{t.subject}</h2><p className="text-slate-600">{t.status} · {t.priority} · {t.orderId || 'No order'}</p><div className="mt-4 flex gap-3"><button className="rounded-full bg-brand px-5 py-2 font-bold text-white">Assign</button><button className="rounded-full border px-5 py-2 font-bold">Resolve</button></div></article>)}</div></div>; }

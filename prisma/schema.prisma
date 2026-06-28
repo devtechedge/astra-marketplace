@@ -65,3 +65,55 @@ model RecommendationEvent { id String @id @default(cuid()) userId String? produc
 model CmsPage { id String @id @default(cuid()) slug String @unique title String body String published Boolean @default(false) }
 model HomepageModule { id String @id @default(cuid()) title String type String config Json position Int active Boolean @default(true) }
 model FeatureFlag { id String @id @default(cuid()) key String @unique enabled Boolean @default(false) config Json? }
+
+model WarehouseInventory {
+  id String @id @default(cuid())
+  productId String
+  warehouseCode String
+  available Int @default(0)
+  reserved Int @default(0)
+  damaged Int @default(0)
+  updatedAt DateTime @updatedAt
+  @@unique([productId, warehouseCode])
+}
+
+model SponsoredCampaign {
+  id String @id @default(cuid())
+  sellerId String
+  name String
+  budget Decimal
+  spend Decimal @default(0)
+  status String @default("PENDING_REVIEW")
+  keywords Json
+  startsAt DateTime?
+  endsAt DateTime?
+  createdAt DateTime @default(now())
+}
+
+model SupportMacro {
+  id String @id @default(cuid())
+  title String
+  body String
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+model SearchMerchandisingRule {
+  id String @id @default(cuid())
+  query String
+  action String
+  config Json
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+model AnalyticsEvent {
+  id String @id @default(cuid())
+  type String
+  userId String?
+  productId String?
+  sessionId String?
+  metadata Json
+  createdAt DateTime @default(now())
+  @@index([type, createdAt])
+}

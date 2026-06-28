@@ -1,0 +1,3 @@
+import { AdminNav } from '@/components/admin/AdminNav';
+import { featureFlags } from '@/lib/expansionData';
+export default function AdminFlagsPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Feature flags</h1><div className="mt-6 grid gap-4 md:grid-cols-2">{featureFlags.map(f => <div key={f.key} className="rounded-3xl bg-white p-6 shadow-card"><div className="flex justify-between"><h2 className="font-black">{f.key}</h2><span className={f.enabled ? 'text-emerald-700 font-bold' : 'text-slate-500'}>{f.enabled ? 'Enabled' : 'Disabled'}</span></div><p className="mt-2 text-sm text-slate-600">{f.description}</p><p className="mt-1 text-xs font-bold uppercase text-slate-500">Owner: {f.owner}</p></div>)}</div></div>; }
