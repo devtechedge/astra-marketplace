@@ -5,7 +5,10 @@ import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'AstraMart - Original Marketplace Demo',
-  description: 'Portfolio-ready end-to-end marketplace with customer, seller and admin workflows.'
+  description: 'Portfolio-ready end-to-end marketplace with customer, seller and admin workflows.',
+  icons: {
+    icon: '/favicon.svg'
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
