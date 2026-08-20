@@ -5,7 +5,7 @@ import { SearchAutocomplete } from '@/components/search/SearchAutocomplete';
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <header data-testid="site-header" className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="container-page flex items-center gap-4 py-3">
         <Link href="/" className="flex items-center gap-2 text-2xl font-black text-brand">
           <span className="grid size-10 place-items-center rounded-2xl bg-brand text-white">A</span>AstraMart
@@ -23,7 +23,7 @@ export function Header() {
       <div className="border-t border-slate-100 bg-ink text-white">
         <div className="container-page flex gap-5 overflow-x-auto py-2 text-sm">
           <span className="flex items-center gap-1 whitespace-nowrap text-amber-300"><MapPin className="size-4" /> Deliver to 94105</span>
-          <Link href="/deals" className="whitespace-nowrap font-bold text-amber-300">Today&apos;s Deals</Link>
+          <Link href="/deals" className="whitespace-nowrap font-bold text-amber-300">Today's Deals</Link>
           <Link href="/membership" className="whitespace-nowrap">AstraPlus</Link>
           {categories.map(c => <Link key={c} href={`/search?department=${encodeURIComponent(c)}`} className="whitespace-nowrap">{c}</Link>)}
           <Link href="/help" className="whitespace-nowrap">Customer Service</Link>

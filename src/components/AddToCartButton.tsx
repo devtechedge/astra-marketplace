@@ -13,5 +13,14 @@ export function AddToCartButton({ productId, label = 'Add to cart' }: { productI
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
   }
-  return <button onClick={add} className="focus-ring rounded-full bg-coral px-6 py-3 font-bold text-white shadow-card hover:bg-orange-600">{added ? 'Added ✓' : label}</button>;
+  return (
+    <button
+      type="button"
+      data-testid={label === 'Add to cart' ? 'add-to-cart' : undefined}
+      onClick={add}
+      className="focus-ring rounded-full bg-coral px-6 py-3 font-bold text-white shadow-card hover:bg-orange-600"
+    >
+      {added ? 'Added ✓' : label}
+    </button>
+  );
 }

@@ -14,7 +14,7 @@ export function CartClient() {
   const summary = useMemo(() => calculateCart(cart, coupon), [cart, coupon]);
   if (!cart.length) return <div className="rounded-3xl bg-white p-10 text-center shadow-card"><h1 className="text-3xl font-black">Your cart is empty</h1><p className="mt-2 text-slate-600">Browse deals and add products to start checkout.</p><Link href="/" className="mt-6 inline-block rounded-full bg-brand px-6 py-3 font-bold text-white">Continue shopping</Link></div>;
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
+    <div data-testid="shopping-cart" className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <section className="rounded-3xl bg-white p-6 shadow-card">
         <h1 className="text-3xl font-black">Shopping Cart</h1>
         <div className="mt-6 divide-y">
