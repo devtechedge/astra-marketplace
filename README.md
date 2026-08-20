@@ -3,6 +3,7 @@
 Original Amazon-inspired marketplace with customer storefront, seller portal, admin back-office, cart/checkout, returns, recommendations and Prisma schema. Built as a portfolio demo.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?logo=vercel)](https://astra-marketplace.vercel.app/)
+[![CI](https://github.com/devtechedge/astra-marketplace/actions/workflows/ci.yml/badge.svg)](https://github.com/devtechedge/astra-marketplace/actions/workflows/ci.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?logo=prisma)](https://www.prisma.io/)
@@ -44,7 +45,7 @@ Original Amazon-inspired marketplace with customer storefront, seller portal, ad
 - **Admin command center** — GMV/orders/refund/SLA metrics, seller & product moderation, support tickets, audit, CMS, feature flags, analytics, search merchandising
 - **Commerce core** — coupons, tax/shipping calculation, mock payment intents, RMA-style returns, recommendation rows (buy again / trending / recently viewed)
 - **Platform services** — RBAC middleware, health API, notifications, review/Q&A endpoints, system-health dashboard
-- **Production foundation** — Prisma schema (users, sellers, products, orders, shipments, returns, audits, feature flags…), Docker Compose, CI workflow, architecture/security docs
+- **Production foundation** — Prisma schema, Docker Compose, GitHub Actions (unit + typecheck + Playwright), Dependabot, [SECURITY.md](SECURITY.md)
 
 ## Tech Stack
 
@@ -53,7 +54,7 @@ Original Amazon-inspired marketplace with customer storefront, seller portal, ad
 | Frontend     | Next.js 14 (App Router), TypeScript, Tailwind CSS, Lucide |
 | Backend      | Next.js API routes, Zod validation  |
 | Data         | Prisma 5 + PostgreSQL schema, demo repository |
-| Auth         | Demo cookie sessions + bcrypt       |
+| Auth         | Demo cookie sessions + bcrypt (seed) |
 | Tooling      | Vitest, Playwright, ESLint, GitHub Actions |
 | Deploy       | Vercel-ready                        |
 
@@ -65,6 +66,12 @@ npm run dev
 ```
 
 Open http://localhost:3000
+
+```bash
+npm test            # unit
+npm run typecheck
+npm run test:e2e    # Playwright Chromium smokes
+```
 
 Optional local database:
 
@@ -79,7 +86,7 @@ npm run db:generate && npm run db:push && npm run db:seed
 - Service/repository split for auth, catalog, cart, checkout, fulfillment, returns, seller and admin
 - Middleware with security headers and route protection
 - Demo repository powers the live Vercel deploy; swap to Prisma client for real persistence
-- Deeper docs live under `docs/` (ARCHITECTURE, API_SPEC, SECURITY_REVIEW, DEPLOYMENT)
+- Threat model: [SECURITY.md](SECURITY.md). Deeper docs under `docs/` (ARCHITECTURE, API_SPEC, DEPLOYMENT)
 
 ## License
 

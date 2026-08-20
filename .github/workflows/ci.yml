@@ -4,33 +4,48 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
-  validate:
+  test:
+    name: unit · typecheck · e2e
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
     env:
-      DATABASE_URL: postgresql://astra:astra@localhost:5432/astra_marketplace?schema=public
-      APP_SECRET: astra-marketplace-ci-secret
+      NEXT_TELEMETRY_DISABLED: 1
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
       PAYMENT_PROVIDER: mock
       EMAIL_PROVIDER: mock
       SMS_PROVIDER: mock
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
-      NEXT_TELEMETRY_DISABLED: 1
-      CI: false
-
+      APP_SECRET: astra-marketplace-ci-secret
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build project
-        run: npm run build
+      - name: Unit tests
+        run: npm test
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+        env:
+          CI: true
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
