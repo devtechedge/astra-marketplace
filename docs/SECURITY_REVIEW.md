@@ -1,11 +1,13 @@
-# Security Review
+# Security Review (production backlog)
+
+The hiring-manager threat model lives in **[SECURITY.md](../SECURITY.md)**. This file is the longer production hardening list — not a claim that the Vercel demo is already a payment-grade marketplace.
 
 ## Threat Model
 
 | Threat | Mitigation |
 |---|---|
 | Credential stuffing | Rate limit auth endpoints in production, lockout/MFA hooks |
-| Broken access control | Role enum, centralized authorization helper, server-side route guards recommended |
+| Broken access control | Role enum, centralized authorization helper, **signed** sessions (demo cookie is unsigned) |
 | XSS | React escaping, no unsafe HTML, strict validation |
 | SQL injection | Prisma parameterized queries in production mode |
 | CSRF | SameSite cookies or CSRF tokens when switching from token demo to cookie sessions |
@@ -26,9 +28,9 @@
 
 ## Production Hardening Tasks
 
-1. Add middleware-based session validation.
+1. Sign the session (HMAC/JWT); stop treating `astra-role` as the only gate.
 2. Add rate limiting with Redis.
-3. Add CSP/security headers.
-4. Add dependency scanning in CI.
+3. Tighten CSP (drop `unsafe-eval` if Next allows).
+4. Keep Dependabot + `npm audit --omit=dev` in CI.
 5. Enforce server-side permission checks for every mutation.
 6. Add transactional order creation and inventory locks.
