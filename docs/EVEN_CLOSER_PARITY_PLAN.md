@@ -2,7 +2,7 @@
 
 ## Purpose
 
-AstraMart already has a strong marketplace demo with storefront, seller portal, admin portal, checkout, returns, notifications, analytics, and operational screens. The next phase should move it from “impressive portfolio marketplace” to “this feels like a real large-scale commerce platform.” The goal is still not to copy Amazon’s trademarks, protected branding, layouts, logos, or proprietary assets. The goal is to create an original marketplace whose depth, polish, workflows, and operational completeness make a recruiter or non-technical visitor feel that almost every expected real marketplace capability is present.
+AstraMart already has a strong marketplace demo with storefront, seller portal, admin portal, checkout, returns, notifications, analytics, and operational screens. The next phase should move it from “impressive portfolio marketplace” to “this feels like a real large-scale commerce platform.” The goal is still not to copy Amazon’s trademarks, protected branding, layouts, logos, or proprietary assets. The goal is to create an original marketplace whose depth, polish, workflows, and operational completeness make a visitor feel that almost every expected real marketplace capability is present.
 
 This document describes additional features and extensions I would add before implementation.
 
@@ -55,7 +55,7 @@ The following should become database-backed:
 - CMS homepage modules
 - Audit logs
 
-Recruiter impact: when someone creates a product, places an order, requests a return, approves a refund, or changes a homepage module, the change should remain visible after refresh.
+Demo impact: when someone creates a product, places an order, requests a return, approves a refund, or changes a homepage module, the change should remain visible after refresh.
 
 ---
 
@@ -91,7 +91,7 @@ Every route and API mutation should enforce role permissions server-side:
 
 Add middleware that redirects unauthorized users and returns proper API errors.
 
-Recruiter impact: switching between customer, seller, and admin accounts feels like a real SaaS/e-commerce platform instead of static pages.
+Demo impact: switching between customer, seller, and admin accounts feels like a real SaaS/e-commerce platform instead of static pages.
 
 ---
 
@@ -133,7 +133,7 @@ Different categories should show different fields:
 - Beauty: ingredients, skin type, warnings
 - Grocery: nutrition, expiration, allergens
 
-Recruiter impact: the seller portal will look like a real marketplace seller center, not just a dashboard.
+Demo impact: the seller portal will look like a real marketplace seller center, not just a dashboard.
 
 ---
 
@@ -168,7 +168,7 @@ Admin/marketing should be able to:
 - Configure search banners
 - Create category landing pages
 
-Recruiter impact: search feels intelligent and business-controlled like a mature commerce platform.
+Demo impact: search feels intelligent and business-controlled like a mature commerce platform.
 
 ---
 
@@ -214,7 +214,7 @@ Add:
 - Transactional inventory reservation
 - Order confirmation email
 
-Recruiter impact: checkout becomes one of the strongest proof points that this is a real full-stack commerce system.
+Demo impact: checkout becomes one of the strongest proof points that this is a real full-stack commerce system.
 
 ---
 
@@ -243,7 +243,7 @@ Seller portal should allow sellers to:
 - Cancel before shipment
 - Handle delivery issue messages
 
-Recruiter impact: order fulfillment looks operationally complete, not just “order placed.”
+Demo impact: order fulfillment looks operationally complete, not just “order placed.”
 
 ---
 
@@ -267,7 +267,7 @@ Add:
 - Customer refund timeline
 - Seller chargeback/claim view
 
-Recruiter impact: customer service and post-order trust feel close to a real marketplace.
+Demo impact: customer service and post-order trust feel close to a real marketplace.
 
 ---
 
@@ -298,7 +298,7 @@ Build a complete support experience:
 - Order context panel
 - Refund/return action shortcuts
 
-Recruiter impact: it looks like a real customer operations system instead of a contact form.
+Demo impact: it looks like a real customer operations system instead of a contact form.
 
 ---
 
@@ -319,7 +319,7 @@ Add full community trust features:
 - Review sentiment summary placeholder
 - Rating distribution by variant
 
-Recruiter impact: product pages become deeper and more trustworthy.
+Demo impact: product pages become deeper and more trustworthy.
 
 ---
 
@@ -342,7 +342,7 @@ Add event-driven personalization:
 
 Initial version can use SQL/event counts. Later it can plug into ML services.
 
-Recruiter impact: the app feels alive and personalized.
+Demo impact: the app feels alive and personalized.
 
 ---
 
@@ -359,7 +359,7 @@ Add a basic retail media layer:
 - Spend reporting
 - Admin ad moderation
 
-Recruiter impact: this demonstrates awareness of how modern marketplaces monetize beyond product sales.
+Demo impact: this demonstrates awareness of how modern marketplaces monetize beyond product sales.
 
 ---
 
@@ -388,7 +388,7 @@ Add working CRUD/action modules:
 
 Every sensitive action should write an audit log.
 
-Recruiter impact: admin portal becomes a centerpiece of the project.
+Demo impact: admin portal becomes a centerpiece of the project.
 
 ---
 
@@ -412,7 +412,7 @@ Add real dashboards using event data:
 
 Use charts, date filters, export buttons, and role-specific dashboards.
 
-Recruiter impact: non-technical viewers see business intelligence, not just code.
+Demo impact: non-technical viewers see business intelligence, not just code.
 
 ---
 
@@ -438,7 +438,7 @@ Add:
 - Unit/integration tests for business logic
 - Vercel deployment guide with environment variables
 
-Recruiter impact: the project looks professionally engineered, not just visually impressive.
+Demo impact: the project looks professionally engineered, not just visually impressive.
 
 ---
 
@@ -462,7 +462,7 @@ The final app should support this live walkthrough:
 14. Login as admin.
 15. Approve seller/product, manage coupon, edit homepage CMS, approve refund, inspect audit log, view analytics.
 
-If this works smoothly, a recruiter can browse AstraMart and reasonably say: “This feels like a real marketplace product, not a toy clone.”
+If this works smoothly, a visitor can browse AstraMart and reasonably say: “This feels like a real marketplace product, not a toy clone.”
 
 ---
 

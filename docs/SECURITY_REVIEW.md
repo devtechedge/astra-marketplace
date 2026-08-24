@@ -1,6 +1,6 @@
 # Security Review (production backlog)
 
-The hiring-manager threat model lives in **[SECURITY.md](../SECURITY.md)**. This file is the longer production hardening list — not a claim that the Vercel demo is already a payment-grade marketplace.
+The public-demo threat model lives in **[SECURITY.md](../SECURITY.md)**. This file is the longer production hardening list — not a claim that the Vercel demo is already a payment-grade marketplace.
 
 ## Threat Model
 

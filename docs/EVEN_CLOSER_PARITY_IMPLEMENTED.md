@@ -128,7 +128,7 @@ Added models for:
 - Search merchandising rules
 - Analytics events
 
-## Recruiter-Facing Demo Flow Added
+## Demo Flow Added
 
 A reviewer can now see:
 

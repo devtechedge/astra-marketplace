@@ -87,7 +87,7 @@ This phase expands AstraMart from a broad marketplace MVP into a much more convi
 - RBAC permission map helper
 - Expanded demo data for customers, addresses, payment methods, notifications, returns, audit events, homepage modules and feature flags
 
-## Recruiter Demo Walkthrough Now Supported
+## Demo Walkthrough Now Supported
 
 A reviewer can now browse this path:
 
