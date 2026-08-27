@@ -19,7 +19,11 @@ export function CheckoutClient() {
   const summary = useMemo(() => calculateCart(cart, 'WELCOME10'), [cart]);
   useEffect(() => setCart(JSON.parse(localStorage.getItem('astra-cart') || '[]')), []);
   async function placeOrder() {
-    const res = await fetch('/api/orders', { method: 'POST', headers: { 'content-type': 'application/json', 'idempotency-key': `checkout-${Date.now()}` }, body: JSON.stringify({ customerEmail: 'customer@demo.com', items: cart, couponCode: 'WELCOME10', address: { name: 'Demo Customer', line1: '100 Market Street', city: 'San Francisco', region: 'CA', postalCode: '94105', country: 'US' }, paymentMethod: 'mock-card' }) });
+    const res = await fetch('/api/orders', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json', 'idempotency-key': `checkout-${Date.now()}` }, body: JSON.stringify({ customerEmail: 'customer@demo.com', items: cart, couponCode: 'WELCOME10', address: { name: 'Demo Customer', line1: '100 Market Street', city: 'San Francisco', region: 'CA', postalCode: '94105', country: 'US' }, paymentMethod: 'mock-card' }) });
+    if (res.status === 401) {
+      window.location.assign('/login?next=/checkout');
+      return;
+    }
     const data = await res.json();
     setPlaced(data.order?.id || 'ord-demo');
     localStorage.removeItem('astra-cart');

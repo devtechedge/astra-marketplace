@@ -1,3 +1,9 @@
 import { NextResponse } from 'next/server';
-import { services } from '@/lib/services/platformServices';
-export async function POST(req: Request) { const { token } = await req.json(); return NextResponse.json(services.auth.resetPassword(token)); }
+import { enforcePublicAuthLimits } from '@/lib/security/api';
+
+export async function POST(req: Request) {
+  const limited = enforcePublicAuthLimits(req, 'reset');
+  if (limited) return limited;
+  await req.json().catch(() => null);
+  return NextResponse.json({ ok: true });
+}

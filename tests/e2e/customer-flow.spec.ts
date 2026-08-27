@@ -1,8 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
+import { signSession } from '../../src/lib/security/session';
+import type { Role } from '../../src/lib/types';
 
-async function setRole(page: Page, role: string) {
+async function setSession(page: Page, email: string, role: Role) {
+  const token = await signSession({ email, role });
   await page.context().addCookies([
-    { name: 'astra-role', value: role, url: 'http://localhost:3000' },
+    { name: 'astra-session', value: token, url: 'http://localhost:3000', httpOnly: true, sameSite: 'Lax' },
   ]);
 }
 
@@ -27,13 +30,13 @@ test('login page shows demo credentials', async ({ page }) => {
 });
 
 test('admin command center with demo admin cookie', async ({ page }) => {
-  await setRole(page, 'ADMIN');
+  await setSession(page, 'admin@demo.com', 'ADMIN');
   await page.goto('/admin');
   await expect(page.getByTestId('admin-command-center')).toBeVisible();
 });
 
 test('seller dashboard with demo seller cookie', async ({ page }) => {
-  await setRole(page, 'SELLER');
+  await setSession(page, 'seller@demo.com', 'SELLER');
   await page.goto('/seller');
   await expect(page.getByTestId('seller-dashboard')).toBeVisible();
 });

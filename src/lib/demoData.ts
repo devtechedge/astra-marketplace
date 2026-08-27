@@ -83,8 +83,3 @@ export const tickets: Ticket[] = [
   { id: 'tic-102', subject: 'Return request for shoes', status: 'PENDING', priority: 'HIGH' }
 ];
 
-export const demoUsers = [
-  { email: 'customer@demo.com', password: 'Demo123!', role: 'CUSTOMER' },
-  { email: 'seller@demo.com', password: 'Demo123!', role: 'SELLER' },
-  { email: 'admin@demo.com', password: 'Demo123!', role: 'ADMIN' }
-];

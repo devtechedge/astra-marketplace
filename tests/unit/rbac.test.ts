@@ -3,14 +3,15 @@ import { authenticate, authorize } from '@/lib/auth';
 import { can } from '@/lib/services/rbac';
 
 describe('auth + RBAC', () => {
-  it('authenticates demo customer credentials', () => {
-    const session = authenticate('customer@demo.com', 'Demo123!');
+  it('authenticates demo customer credentials', async () => {
+    const session = await authenticate('customer@demo.com', 'Demo123!');
     expect(session?.role).toBe('CUSTOMER');
-    expect(session?.token).toBeTruthy();
+    expect(session?.email).toBe('customer@demo.com');
+    expect(session).not.toHaveProperty('token');
   });
 
-  it('rejects bad passwords', () => {
-    expect(authenticate('customer@demo.com', 'wrong')).toBeNull();
+  it('rejects bad passwords', async () => {
+    expect(await authenticate('customer@demo.com', 'wrong')).toBeNull();
   });
 
   it('ADMIN has wildcard; GUEST cannot moderate', () => {
