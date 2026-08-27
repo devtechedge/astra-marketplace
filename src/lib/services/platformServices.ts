@@ -6,8 +6,8 @@ import type { CartItem, Role } from '@/lib/types';
 export class AuthService {
   login(email: string, password: string) { return authenticate(email, password); }
   logout() { return { ok: true, cleared: ['session', 'csrf'] }; }
-  requestPasswordReset(email: string) { return { ok: true, email, tokenPreview: `reset-${Date.now()}` }; }
-  resetPassword(token: string) { return { ok: true, token, event: 'password.reset' }; }
+  requestPasswordReset(_email: string) { return { ok: true }; }
+  resetPassword(_token?: string) { return { ok: true }; }
 }
 
 export class CatalogService {

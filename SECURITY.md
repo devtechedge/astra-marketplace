@@ -1,6 +1,6 @@
 # Security Assessment — AstraMart (astra-marketplace)
 
-**Date:** 2026-08-21  
+**Date:** 2026-08-28  
 **Scope:** Auth, XSS, injection, CORS, secrets, payments, RBAC  
 **Context:** Public deploy is a **demo-mode marketplace** (Vercel). Prisma + PostgreSQL are a **local production foundation**, not the live path.
 
@@ -8,35 +8,37 @@
 
 ## Executive summary
 
+The demo NOW has: HMAC-signed session, bcrypt demo passwords on a server-only module, API RBAC, origin check, auth rate limit, webhook secret, CSP without unsafe-eval. Residual: demo credentials are public by design; APP_SECRET fallback is demo-only; payments still mock; in-memory rate limit resets on cold start. Still not a real store.
+
 | Area | Risk | Notes |
 |------|------|--------|
-| Authentication | **Demo-only (accepted)** | Public demo credentials; session token is unsigned Base64 `email:role` |
-| Authorization | **Demo-only (accepted)** | Middleware trusts the `astra-role` cookie. Not a production RBAC boundary. |
-| XSS | **Low** | No `dangerouslySetInnerHTML`; React text escaping |
+| Authentication | **Hardened demo** | HMAC-SHA256 session cookie; bcrypt hashes in a server-only module |
+| Authorization | **Hardened demo** | Middleware and APIs verify the signed session; astra-role is ignored |
+| XSS | **Low** | No dangerouslySetInnerHTML; React text escaping; CSP without unsafe-eval |
 | Injection (SQL) | **N/A on Vercel** | Live path uses in-memory `demoData`. Prisma is parameterized **when** wired locally |
-| Payments | **Mock only** | No card PAN storage; `PAYMENT_PROVIDER=mock` |
+| Payments | **Mock only** | No card PAN storage; mock provider; webhook requires a shared secret header |
 | Secrets in repo | **Low** | `.env` gitignored; `.env.example` has placeholders only |
-| CSRF | **Low (demo)** | HttpOnly + `SameSite=lax` cookies on login |
-| CORS | **N/A** | Same-origin Next.js API routes |
+| CSRF | **Low (demo)** | HttpOnly + SameSite=lax HMAC cookie; Origin host must match when present |
+| CORS | **N/A** | Same-origin Next.js API routes; mismatched Origin is 403 |
 | Build config | **OK** | No `ignoreBuildErrors`; `tsc --noEmit` in CI |
 
-**Overall (public Vercel demo):** Low residual risk — seeded data, mock payments, no live database or payment capture.
+**Overall (public Vercel demo):** Low residual risk — seeded data, mock payments, no live database or payment capture. Residual: public demo credentials, APP_SECRET fallback, mock payments, in-memory rate limit. Still not a real store.
 
-**Overall (if this were production with real money/PII):** High — unsigned session, cookie-role authz, public demo passwords. Do **not** claim NextAuth or a hardened production auth stack.
+**Overall (if this were production with real money/PII):** Do not claim NextAuth or a real payment processor. Rotate APP_SECRET, persist users, and stop publishing demo passwords.
 
 ---
 
 ## 1. Authentication & session
 
 **Findings**
-- Live demo logs in against `src/lib/auth.ts` + `demoUsers` (plaintext demo passwords).
-- Login sets `astra-role` and `astra-session` (HttpOnly, SameSite=lax, 8h).
-- `astra-session` is `Buffer.from(\`${email}:${role}\`).toString('base64')` — **not signed, not hashed, not rotated**.
+- Login uses bcrypt compare against hashes in `src/lib/server/demoUsers.ts` (server-only).
+- Login sets HMAC `astra-session` only (HttpOnly, SameSite=lax, 8h). `astra-role` is cleared.
+- Token is HMAC-SHA256 over a base64url payload with 8h expiry and timing-safe verify.
 - Demo credentials are documented in the README on purpose (portfolio DX).
 
-**Verdict:** Auth is a **demo cookie**. Do not claim “secured with NextAuth” or JWT.
+**Verdict:** Hardened demo session. Still not NextAuth or production IAM.
 
-**If auth is added later:** sign the session (HMAC/JWT), hash passwords (bcrypt is already used in `prisma/seed.ts`), expire/rotate cookies, lockout/MFA, never publish credentials.
+**Residual:** demo credentials remain on the login page by design.
 
 ---
 
@@ -44,8 +46,8 @@
 
 **Findings**
 - `src/lib/services/rbac.ts` is an allow-list helper (`can(role, permission)`).
-- `middleware.ts` gates `/admin`, `/seller`, `/checkout` by **cookie role string**, defaulting missing cookies to `CUSTOMER`.
-- API routes are thin wrappers around the demo repository; they are **not** a complete server-side permission mesh.
+- `middleware.ts` gates `/admin`, `/seller`, `/checkout` using the verified HMAC session, treating missing/invalid cookies as GUEST (never CUSTOMER).
+- API routes are thin wrappers around the demo repository; private and mutating routes now call requireSession with role allow-lists.
 
 **Accepted for portfolio demo.** Not accepted for a public production marketplace.
 
@@ -55,7 +57,7 @@
 
 - Code search found **no** `dangerouslySetInnerHTML`.
 - Product titles, reviews, tickets render as React text → default escaping.
-- CSP is set in middleware (`default-src 'self'` plus Next-friendly `unsafe-inline` / `unsafe-eval` for the App Router). Tightening CSP is a follow-up, not a demo blocker.
+- CSP is set in middleware (`default-src 'self'` plus Next-friendly `unsafe-inline` for the App Router). `unsafe-eval` has been removed.
 
 ---
 
@@ -90,7 +92,7 @@ npm audit --omit=dev
 ## 7. Secrets & config
 
 - `.gitignore` excludes `.env`, `.env.local`.
-- `.env.example` documents `DATABASE_URL`, `APP_SECRET`, mock providers — no live secrets.
+- `.env.example` documents `DATABASE_URL`, `APP_SECRET`, `PAYMENT_WEBHOOK_SECRET`, mock providers — no live secrets.
 - Never commit `STRIPE_SECRET_KEY` or database passwords.
 
 ---
@@ -100,10 +102,11 @@ npm audit --omit=dev
 | Path | Auth | Notes |
 |------|------|--------|
 | `/` storefront | None | Seeded catalog |
-| `/api/auth/login` | Public | Sets demo cookies |
-| `/admin/*` | Cookie role | Redirects unless ADMIN-class role |
-| `/seller/*` | Cookie role | SELLER or ADMIN |
-| `/api/payments/*` | Demo | Mock provider only |
+| `/api/auth/login` | Public + rate limit + origin | Sets HMAC astra-session only |
+| `/admin/*` | Signed session | Redirects unless ADMIN-class role |
+| `/seller/*` | Signed session | SELLER or ADMIN |
+| `/api/payments/intents` | Signed session | Mock provider only |
+| `/api/payments/webhook` | Shared secret header | No session cookie |
 | `/api/health` | None | Liveness |
 
 Hello-world placeholder APIs: none.
@@ -114,13 +117,15 @@ Hello-world placeholder APIs: none.
 
 **Accepted for portfolio demo**
 - Public demo passwords.
-- Unsigned session token.
+- APP_SECRET fallback is demo-only.
+- In-memory rate limit resets on cold start.
 - In-memory repository on Vercel.
-- Middleware CSP allows `unsafe-eval` for Next.js.
+- Payments still mock.
+- CSP still allows unsafe-inline for Next.js.
 
 **Not accepted if real payments or PII go live**
-- Unsigned `astra-session`.
-- Role cookie as the only authorization check.
+- Demo credentials in the UI.
+- Fallback HMAC / webhook secrets in source.
 - Prisma/Postgres exposed without migrations, TLS, and least-privilege roles.
 
 ---
