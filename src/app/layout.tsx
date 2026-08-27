@@ -19,7 +19,7 @@ const sans = IBM_Plex_Sans({
 
 export const metadata: Metadata = {
   title: 'AstraMart',
-  description: 'An independent marketplace for objects worth keeping.',
+  description: 'An independent paper-and-copper marketplace demo for objects worth keeping.',
   icons: {
     icon: '/favicon.svg'
   }

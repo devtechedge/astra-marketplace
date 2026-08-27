@@ -1,5 +1,7 @@
 # Even Closer Production-Parity Expansion Implemented
 
+**Status 2026-08-28.** A later restyle/catalog pass (1.3.0) and demo security pass (1.4.0) landed on top of this architecture. Sessions are HMAC-signed, not a cookie simulation. CI runs unit + typecheck + Playwright. Historical write-up below.
+
 This pass upgrades AstraMart again with architecture and workflows that make it feel closer to a real large-scale marketplace while remaining an original brand.
 
 ## Persistent Application Architecture
@@ -27,7 +29,7 @@ The current portfolio build uses a demo repository adapter, but the code is stru
 Added:
 
 - Login client with API-backed sign-in
-- Secure HTTP-only demo cookies
+- HMAC-signed httpOnly `astra-session` cookies (SameSite=lax, 8h)
 - Logout API
 - Forgot/reset password APIs and pages
 - Register page
@@ -132,7 +134,7 @@ Added models for:
 
 A reviewer can now see:
 
-1. Real login API behavior with cookie session simulation.
+1. Real login API behavior with an HMAC-signed `astra-session` cookie (token stays in the cookie, not the JSON body).
 2. Seller creates a product through a full wizard.
 3. Admin manages categories, search rules, ads and system health.
 4. Cart and checkout expose payment-intent and idempotency concepts.
@@ -145,11 +147,10 @@ A reviewer can now see:
 
 The app is now significantly closer to production parity, but actual production operation would still require wiring the service layer to live providers:
 
-- Prisma database repositories for every mutation
-- Stripe test/live payment confirmation
-- Real Redis rate limiting
-- Hosted S3/R2 image storage
+- Prisma database repositories for every mutation (**not wired on Vercel**)
+- Stripe test/live payment confirmation (payments remain mock)
+- Real Redis rate limiting (in-memory demo limiter only)
+- Hosted S3/R2 image storage (catalog JPEGs currently in `public/products/`)
 - Meilisearch/Typesense/OpenSearch integration
 - Email/SMS provider credentials
 - Background job processor
-- Full automated test execution after dependency installation

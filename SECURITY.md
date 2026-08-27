@@ -46,7 +46,7 @@ The demo NOW has: HMAC-signed session, bcrypt demo passwords on a server-only mo
 
 **Findings**
 - `src/lib/services/rbac.ts` is an allow-list helper (`can(role, permission)`).
-- `middleware.ts` gates `/admin`, `/seller`, `/checkout` using the verified HMAC session, treating missing/invalid cookies as GUEST (never CUSTOMER).
+- `middleware.ts` gates `/admin`, `/seller`, `/checkout`, `/account`, `/orders` using the verified HMAC session, treating missing/invalid cookies as GUEST (never CUSTOMER).
 - API routes are thin wrappers around the demo repository; private and mutating routes now call requireSession with role allow-lists.
 
 **Accepted for portfolio demo.** Not accepted for a public production marketplace.
@@ -57,7 +57,7 @@ The demo NOW has: HMAC-signed session, bcrypt demo passwords on a server-only mo
 
 - Code search found **no** `dangerouslySetInnerHTML`.
 - Product titles, reviews, tickets render as React text → default escaping.
-- CSP is set in middleware (`default-src 'self'` plus Next-friendly `unsafe-inline` for the App Router). `unsafe-eval` has been removed.
+- CSP is set in middleware (`default-src 'self'` plus Next-friendly `unsafe-inline` for the App Router). `unsafe-eval` has been removed. Overlay scrollbars are CSS-only (no extra script).
 
 ---
 
@@ -101,13 +101,24 @@ npm audit --omit=dev
 
 | Path | Auth | Notes |
 |------|------|--------|
-| `/` storefront | None | Seeded catalog |
+| `/` storefront | None | Seeded 18-SKU catalog with JPEGs |
+| `/gift-cards` | None | Gift-card SKUs |
+| `/api/products` | None | Public catalog |
+| `/api/search/suggestions` | None | Public |
+| `/api/coupons` | None | Public GET |
+| `/api/health` | None | Liveness |
 | `/api/auth/login` | Public + rate limit + origin | Sets HMAC astra-session only |
+| `/checkout` | Signed session | Login required; redirects guests |
+| `/account` | Signed session | Login required |
+| `/orders` | Signed session | Login required |
+| `/api/orders` | Signed session | GET filtered to session email unless ADMIN/SUPPORT; anonymous POST is 401 |
 | `/admin/*` | Signed session | Redirects unless ADMIN-class role |
+| `/api/admin/*` | Signed session | `requireSession` ADMIN-class roles |
+| `/api/analytics/events` GET | Signed session | Admin dashboard metrics |
+| `/api/analytics/events` POST | Origin-checked public | No session |
 | `/seller/*` | Signed session | SELLER or ADMIN |
 | `/api/payments/intents` | Signed session | Mock provider only |
-| `/api/payments/webhook` | Shared secret header | No session cookie |
-| `/api/health` | None | Liveness |
+| `/api/payments/webhook` | Shared secret header | `x-astra-webhook-secret`; no session cookie |
 
 Hello-world placeholder APIs: none.
 

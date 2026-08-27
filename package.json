@@ -1,8 +1,8 @@
 {
   "name": "astra-marketplace",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "private": true,
-  "description": "Original Amazon-style end-to-end marketplace portfolio app with customer, seller and admin workflows.",
+  "description": "Original marketplace demo with paper/copper storefront, 18-SKU catalog, HMAC demo sessions, seller/admin portals; Vercel is seeded demo data + mock payments.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

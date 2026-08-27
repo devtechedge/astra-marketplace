@@ -1,5 +1,7 @@
 # Production-Level Expansion Implemented
 
+**Status 2026-08-28.** Later passes added the paper/copper restyle and 18-SKU JPEG catalog (changelog 1.3.0, PRs #2–#5) and demo security hardening (changelog 1.4.0, PR #6: HMAC sessions, API RBAC, gated checkout). Gift cards now sell SKUs. Checkout requires login. This file keeps the historical expansion write-up below.
+
 This phase expands AstraMart from a broad marketplace MVP into a much more convincing production-style Amazon-inspired marketplace portfolio. It still uses original branding and does not copy protected Amazon identity, assets, logos or text.
 
 ## Added Storefront Depth
@@ -97,7 +99,7 @@ A reviewer can now browse this path:
 4. Open a rich product detail page.
 5. Compare seller offers and review trust sections.
 6. Add item to cart.
-7. Apply coupon and proceed through expanded checkout.
+7. Sign in as the demo customer, then apply coupon and proceed through expanded checkout (anonymous checkout is blocked).
 8. Place mock order with payment/inventory/audit events.
 9. View order timeline.
 10. Start a return request and generate an RMA.
@@ -109,11 +111,11 @@ A reviewer can now browse this path:
 
 The repo is now much closer to a production-style marketplace experience for portfolio review. The remaining items to turn it into a live commerce business are provider integrations and persistence wiring:
 
-- Connect all UI/API mutations to Prisma repositories
-- Add real secure session middleware and route guards
-- Add Stripe test-mode payment intents
-- Add hosted object storage for product images
+- Connect all UI/API mutations to Prisma repositories (**not wired on Vercel**; live path is in-memory demoData)
+- ~~Add real secure session middleware and route guards~~ **Done for the demo** (HMAC `astra-session` + API RBAC). Still need a real IdP if this ever leaves demo mode.
+- Add Stripe test-mode payment intents (payments remain mock)
+- Add hosted object storage for product images (catalog JPEGs currently live in `public/products/`)
 - Add real email/SMS provider
-- Add Redis-backed rate limiting
+- Add Redis-backed rate limiting (in-memory 10/10min/IP is demo-only)
 - Add search provider such as Meilisearch, Typesense or OpenSearch
-- Run full CI validation after dependency installation
+- ~~Run full CI validation after dependency installation~~ **CI runs** unit + typecheck + Playwright on GitHub Actions
