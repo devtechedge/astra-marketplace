@@ -52,7 +52,7 @@ export function Header() {
       <div className="border-t border-line bg-paper">
         <div className="container-page flex gap-6 overflow-x-auto py-2.5 text-[13px] text-muted">
           <Link href="/deals" className="whitespace-nowrap hover:text-ink">Deals</Link>
-          {categories.map(c => (
+          {categories.filter(c => c !== 'Gift cards').map(c => (
             <Link key={c} href={`/search?department=${encodeURIComponent(c)}`} className="whitespace-nowrap hover:text-ink">
               {c}
             </Link>
