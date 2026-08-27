@@ -1,3 +1,33 @@
+'use client';
+
 import Link from 'next/link';
-const links = [['Dashboard','/seller'], ['Onboarding','/seller/onboarding'], ['Products','/seller/products'], ['Orders','/seller/orders'], ['Promotions','/seller/promotions'], ['Payouts','/seller/payouts'], ['Support','/seller/support'], ['Ads','/seller/ads'], ['New Listing','/seller/products/new']];
-export function SellerNav() { return <nav className="mb-8 flex gap-2 overflow-x-auto rounded-3xl bg-white p-2 shadow-card">{links.map(([label, href]) => <Link key={href} href={href} className="whitespace-nowrap rounded-2xl px-4 py-2 text-sm font-bold hover:bg-emerald-50 hover:text-mint">{label}</Link>)}</nav>; }
+import { usePathname } from 'next/navigation';
+
+const links = [
+  ['Dashboard', '/seller'],
+  ['Onboarding', '/seller/onboarding'],
+  ['Products', '/seller/products'],
+  ['New listing', '/seller/products/new'],
+  ['Orders', '/seller/orders'],
+  ['Promotions', '/seller/promotions'],
+  ['Payouts', '/seller/payouts'],
+  ['Support', '/seller/support'],
+  ['Ads', '/seller/ads']
+];
+
+export function SellerNav() {
+  const pathname = usePathname();
+  return (
+    <nav className="ops-nav mb-10 flex gap-4 overflow-x-auto border-b border-line lg:mb-0 lg:block lg:overflow-visible lg:border-b-0 lg:border-r lg:pr-6">
+      <p className="page-kicker mb-3 hidden lg:block">Seller</p>
+      {links.map(([label, href]) => {
+        const current = pathname === href;
+        return (
+          <Link key={href} href={href} aria-current={current ? 'page' : undefined} className="whitespace-nowrap">
+            {label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}

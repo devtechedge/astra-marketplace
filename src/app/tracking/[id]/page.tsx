@@ -1,2 +1,21 @@
 import { ShipmentTimeline } from '@/components/fulfillment/ShipmentTimeline';
-export default function TrackingPage({ params }: { params: { id: string } }) { return <div className="container-page py-10"><h1 className="text-4xl font-black">Tracking {params.id}</h1><p className="mt-2 text-slate-600">Carrier timeline, split-shipment support and delivery exception placeholders.</p><div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]"><ShipmentTimeline /><aside className="rounded-3xl bg-white p-6 shadow-card"><h2 className="text-2xl font-black">Delivery details</h2><p className="mt-3 text-slate-600">Carrier: Astra Logistics</p><p className="text-slate-600">Status: In transit</p><button className="mt-5 rounded-full border px-5 py-2 font-bold">Report delivery issue</button><button className="mt-3 block rounded-full border px-5 py-2 font-bold">Contact support</button></aside></div></div>; }
+
+export default function TrackingPage({ params }: { params: { id: string } }) {
+  return (
+    <div className="container-page py-10 md:py-16">
+      <p className="page-kicker">Fulfillment</p>
+      <h1 className="mt-2">Tracking {params.id}</h1>
+      <p className="page-lead">Carrier timeline, split-shipment support and delivery exception placeholders.</p>
+      <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_280px]">
+        <ShipmentTimeline />
+        <aside className="panel p-6">
+          <h2>Delivery details</h2>
+          <p className="mt-3 text-sm text-muted">Carrier: Astra Logistics</p>
+          <p className="text-sm text-muted">Status: In transit</p>
+          <button className="btn btn-ghost mt-6 w-full">Report delivery issue</button>
+          <button className="btn-quiet mt-4 block text-sm">Contact support</button>
+        </aside>
+      </div>
+    </div>
+  );
+}

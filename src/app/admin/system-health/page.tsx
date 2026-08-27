@@ -1,2 +1,18 @@
-import { AdminNav } from '@/components/admin/AdminNav';
-export default function AdminSystemHealthPage() { const checks = ['API latency', 'Database connectivity', 'Redis rate limiter', 'Payment webhooks', 'Search index', 'Notification provider', 'Object storage', 'Background jobs']; return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">System health</h1><p className="mt-2 text-slate-600">Readiness checks, provider status and operational monitoring.</p><div className="mt-8 grid gap-4 md:grid-cols-4">{checks.map((c,i) => <div key={c} className="rounded-3xl bg-white p-6 shadow-card"><h2 className="font-black">{c}</h2><p className={`mt-2 font-bold ${i === 3 ? 'text-amber-600' : 'text-emerald-700'}`}>{i === 3 ? 'Mock mode' : 'Healthy'}</p></div>)}</div></div>; }
+export default function AdminSystemHealthPage() {
+  const checks = ['API latency', 'Database connectivity', 'Redis rate limiter', 'Payment webhooks', 'Search index', 'Notification provider', 'Object storage', 'Background jobs'];
+  return (
+    <div>
+      <p className="page-kicker">Ops</p>
+      <h1 className="mt-2">System health</h1>
+      <p className="page-lead">Readiness checks, provider status and operational monitoring.</p>
+      <div className="mt-10 grid gap-px border border-line bg-line md:grid-cols-4">
+        {checks.map((c, i) => (
+          <div key={c} className="bg-surface p-6">
+            <h2 className="text-lg">{c}</h2>
+            <p className={`mt-2 text-sm ${i === 3 ? 'text-muted' : 'text-success'}`}>{i === 3 ? 'Mock mode' : 'Healthy'}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

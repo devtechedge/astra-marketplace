@@ -13,14 +13,15 @@ export function AddToCartButton({ productId, label = 'Add to cart' }: { productI
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
   }
+  const isPrimary = label === 'Add to cart';
   return (
     <button
       type="button"
-      data-testid={label === 'Add to cart' ? 'add-to-cart' : undefined}
+      data-testid={isPrimary ? 'add-to-cart' : undefined}
       onClick={add}
-      className="focus-ring rounded-full bg-coral px-6 py-3 font-bold text-white shadow-card hover:bg-orange-600"
+      className={`focus-ring w-full ${isPrimary ? 'btn btn-solid' : 'btn btn-ghost'}`}
     >
-      {added ? 'Added ✓' : label}
+      {added ? 'Added' : label}
     </button>
   );
 }

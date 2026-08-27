@@ -1,1 +1,17 @@
-export default function PrivacyPage() { return <div className="container-page py-10"><h1 className="text-4xl font-black">Privacy and data controls</h1><div className="mt-8 grid gap-5 md:grid-cols-3">{['Export my data', 'Delete account request', 'Manage ad personalization', 'Clear browsing history', 'Notification consent', 'Security activity'].map(x => <div key={x} className="rounded-3xl bg-white p-6 shadow-card"><h2 className="font-black">{x}</h2><p className="mt-2 text-sm text-slate-600">Production-ready placeholder for privacy compliance workflows.</p></div>)}</div></div>; }
+export default function PrivacyPage() {
+  const items = ['Export my data', 'Delete account request', 'Manage ad personalization', 'Clear browsing history', 'Notification consent', 'Security activity'];
+  return (
+    <div className="container-page py-10 md:py-16">
+      <p className="page-kicker">Legal</p>
+      <h1 className="mt-2">Privacy and data controls</h1>
+      <div className="mt-10 grid gap-px border border-line bg-line md:grid-cols-3">
+        {items.map(x => (
+          <div key={x} className="bg-surface p-6">
+            <h2 className="text-lg">{x}</h2>
+            <p className="mt-2 text-sm text-muted">Production-ready placeholder for privacy compliance workflows.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

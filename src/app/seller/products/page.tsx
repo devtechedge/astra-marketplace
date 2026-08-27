@@ -1,4 +1,50 @@
-import { SellerNav } from '@/components/seller/SellerNav';
 import { products } from '@/lib/demoData';
 import { formatMoney } from '@/lib/commerce';
-export default function SellerProductsPage() { return <div className="container-page py-10"><SellerNav /><div className="flex justify-between gap-4"><div><h1 className="text-4xl font-black">Product manager</h1><p className="mt-2 text-slate-600">Create, edit, bulk import/export and moderate listings.</p></div><button className="h-fit rounded-full bg-coral px-6 py-3 font-bold text-white">New listing</button></div><section className="mt-8 rounded-3xl bg-white p-6 shadow-card"><div className="mb-4 flex flex-wrap gap-3"><button className="rounded-full border px-4 py-2 font-bold">Import CSV</button><button className="rounded-full border px-4 py-2 font-bold">Export CSV</button><button className="rounded-full border px-4 py-2 font-bold">Variant/SKU editor</button></div><div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead><tr className="border-b"><th className="py-3">Listing</th><th>Price</th><th>Stock</th><th>Moderation</th><th>Conversion</th><th>Actions</th></tr></thead><tbody>{products.map(p => <tr key={p.id} className="border-b"><td className="py-3 font-bold">{p.title}</td><td>{formatMoney(p.price)}</td><td>{p.stock}</td><td>Approved</td><td>{(p.rating * 1.7).toFixed(1)}%</td><td className="font-bold text-brand">Edit · Promote · Archive</td></tr>)}</tbody></table></div></section></div>; }
+import Link from 'next/link';
+
+export default function SellerProductsPage() {
+  return (
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="page-kicker">Catalog</p>
+          <h1 className="mt-2">Product manager</h1>
+          <p className="page-lead">Create, edit, bulk import/export and moderate listings.</p>
+        </div>
+        <Link href="/seller/products/new" className="btn btn-solid">New listing</Link>
+      </div>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <button className="btn btn-ghost">Import CSV</button>
+        <button className="btn btn-ghost">Export CSV</button>
+        <button className="btn-quiet text-sm">Variant/SKU editor</button>
+      </div>
+      <div className="mt-6 overflow-x-auto">
+        <table className="ops-table">
+          <thead>
+            <tr>
+              <th>Listing</th><th>Price</th><th>Stock</th><th>Moderation</th><th>Conversion</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map(p => (
+              <tr key={p.id}>
+                <td className="font-medium">{p.title}</td>
+                <td className="tabular-nums">{formatMoney(p.price)}</td>
+                <td className="tabular-nums">{p.stock}</td>
+                <td>Approved</td>
+                <td className="tabular-nums">{(p.rating * 1.7).toFixed(1)}%</td>
+                <td>
+                  <button className="btn-quiet text-sm">Edit</button>
+                  <span className="mx-2 text-line">·</span>
+                  <button className="btn-quiet text-sm">Promote</button>
+                  <span className="mx-2 text-line">·</span>
+                  <button className="btn-quiet text-sm">Archive</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

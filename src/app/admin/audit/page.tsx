@@ -1,3 +1,30 @@
-import { AdminNav } from '@/components/admin/AdminNav';
 import { auditEvents } from '@/lib/expansionData';
-export default function AdminAuditPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Audit log</h1><div className="mt-6 rounded-3xl bg-white p-6 shadow-card"><div className="divide-y">{auditEvents.map(a => <div key={a.id} className="grid gap-3 py-4 md:grid-cols-5"><strong>{a.action}</strong><span>{a.actor}</span><span>{a.entity}:{a.entityId}</span><span>{a.severity}</span><span>{new Date(a.createdAt).toLocaleString()}</span></div>)}</div></div></div>; }
+
+export default function AdminAuditPage() {
+  return (
+    <div>
+      <p className="page-kicker">Security</p>
+      <h1 className="mt-2">Audit log</h1>
+      <div className="mt-6 overflow-x-auto">
+        <table className="ops-table">
+          <thead>
+            <tr>
+              <th>Action</th><th>Actor</th><th>Entity</th><th>Severity</th><th>When</th>
+            </tr>
+          </thead>
+          <tbody>
+            {auditEvents.map(a => (
+              <tr key={a.id}>
+                <td className="font-medium">{a.action}</td>
+                <td>{a.actor}</td>
+                <td className="text-muted">{a.entity}:{a.entityId}</td>
+                <td>{a.severity}</td>
+                <td className="text-muted">{new Date(a.createdAt).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

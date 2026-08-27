@@ -1,2 +1,23 @@
 import { notifications } from '@/lib/expansionData';
-export default function NotificationsPage() { return <div className="container-page py-10"><h1 className="text-4xl font-black">Notification center</h1><p className="mt-2 text-slate-600">In-app, email and SMS event stream simulator.</p><div className="mt-6 space-y-4">{notifications.map(n => <article key={n.id} className="rounded-3xl bg-white p-5 shadow-card"><div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-black">{n.title}</h2><span className="rounded-full bg-indigo-50 px-3 py-1 text-sm font-bold text-indigo-700">{n.channel}</span></div><p className="mt-2 text-slate-700">{n.body}</p><p className="mt-2 text-xs font-bold uppercase tracking-wide text-slate-500">{n.event} · {new Date(n.createdAt).toLocaleString()}</p></article>)}</div></div>; }
+
+export default function NotificationsPage() {
+  return (
+    <div className="container-page py-10 md:py-16">
+      <p className="page-kicker">Inbox</p>
+      <h1 className="mt-2">Notification center</h1>
+      <p className="page-lead">In-app, email and SMS event stream simulator.</p>
+      <div className="mt-10 divide-y divide-line border-y border-line">
+        {notifications.map(n => (
+          <article key={n.id} className="py-6">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <h2 className="text-xl">{n.title}</h2>
+              <span className="chip">{n.channel}</span>
+            </div>
+            <p className="mt-2 text-sm">{n.body}</p>
+            <p className="mt-2 text-[11px] uppercase tracking-[0.12em] text-muted">{n.event} · {new Date(n.createdAt).toLocaleString()}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}

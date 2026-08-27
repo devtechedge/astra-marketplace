@@ -5,14 +5,30 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: '#101828',
-        brand: '#3957ff',
-        coral: '#ff6b4a',
-        mint: '#18b892',
-        cream: '#fff9ef'
+        paper: '#F4EFE6',
+        surface: '#FFFCF7',
+        ink: '#1A1612',
+        muted: '#6B645C',
+        line: '#E4DCD0',
+        copper: '#C45C26',
+        success: '#2F6B4F',
+        danger: '#9B2C2C'
       },
-      boxShadow: {
-        card: '0 12px 30px rgba(16, 24, 40, 0.08)'
+      fontFamily: {
+        sans: ['var(--font-sans)', 'IBM Plex Sans', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'Fraunces', 'Georgia', 'serif']
+      },
+      borderRadius: {
+        DEFAULT: '6px',
+        sm: '4px',
+        md: '6px',
+        lg: '10px'
+      },
+      spacing: {
+        18: '4.5rem'
+      },
+      maxWidth: {
+        page: '72rem'
       }
     }
   },

@@ -1,1 +1,15 @@
-export default function HelpPage() { const topics = ['Track a package', 'Cancel an order', 'Start a return', 'Refund timelines', 'Payment security', 'AstraPlus benefits', 'Seller support', 'Report a product']; return <div className="container-page py-10"><h1 className="text-4xl font-black">Customer service</h1><p className="mt-2 text-slate-600">Self-service help center with ticket escalation.</p><div className="mt-8 grid gap-5 md:grid-cols-4">{topics.map(t => <a key={t} href="/support" className="rounded-3xl bg-white p-6 font-bold shadow-card hover:text-brand">{t}</a>)}</div></div>; }
+export default function HelpPage() {
+  const topics = ['Track a package', 'Cancel an order', 'Start a return', 'Refund timelines', 'Payment security', 'AstraPlus benefits', 'Seller support', 'Report a product'];
+  return (
+    <div className="container-page py-10 md:py-16">
+      <p className="page-kicker">Help</p>
+      <h1 className="mt-2">Customer service</h1>
+      <p className="page-lead">Self-service first. Tickets when you need a person.</p>
+      <div className="mt-10 grid gap-px border border-line bg-line md:grid-cols-4">
+        {topics.map(t => (
+          <a key={t} href="/support" className="bg-surface p-6 text-sm font-medium hover:bg-paper">{t}</a>
+        ))}
+      </div>
+    </div>
+  );
+}

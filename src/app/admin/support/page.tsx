@@ -1,3 +1,22 @@
-import { AdminNav } from '@/components/admin/AdminNav';
 import { tickets } from '@/lib/demoData';
-export default function AdminSupportPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Support ticket console</h1><div className="mt-6 space-y-4">{tickets.map(t => <article key={t.id} className="rounded-3xl bg-white p-6 shadow-card"><h2 className="font-black">{t.subject}</h2><p className="text-slate-600">{t.status} · {t.priority} · {t.orderId || 'No order'}</p><div className="mt-4 flex gap-3"><button className="rounded-full bg-brand px-5 py-2 font-bold text-white">Assign</button><button className="rounded-full border px-5 py-2 font-bold">Resolve</button></div></article>)}</div></div>; }
+
+export default function AdminSupportPage() {
+  return (
+    <div>
+      <p className="page-kicker">Support</p>
+      <h1 className="mt-2">Ticket console</h1>
+      <div className="mt-10 divide-y divide-line border-y border-line">
+        {tickets.map(t => (
+          <article key={t.id} className="py-6">
+            <h2 className="text-lg">{t.subject}</h2>
+            <p className="text-sm text-muted">{t.status} · {t.priority} · {t.orderId || 'No order'}</p>
+            <div className="mt-4 flex gap-3">
+              <button className="btn btn-solid">Assign</button>
+              <button className="btn btn-ghost">Resolve</button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
