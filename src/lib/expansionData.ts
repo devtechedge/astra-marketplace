@@ -73,4 +73,4 @@ export const sellerOrders = [
   { id: 'so-2', orderId: 'ord-9010', buyer: 'maya@example.com', item: 'OrbitCam 4K Waterproof Action Camera Bundle', qty: 2, status: 'Processing', sla: 'Ship tomorrow', value: 179.98 }
 ];
 
-export const searchSuggestions = ['headphones', 'air fryer', 'running shoes', '4k camera', 'deep work book', 'skincare kit', 'gift cards', 'laptop stand', 'wireless charger'];
+export const searchSuggestions = ['headphones', 'air fryer', 'running shoes', '4k camera', 'deep work book', 'skincare kit', 'yoga mat', 'kettlebell', 'wooden train', 'olive oil', 'coffee', 'jump starter', 'cat carrier', 'gift cards'];
