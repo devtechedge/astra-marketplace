@@ -1,3 +1,27 @@
-import { AdminNav } from '@/components/admin/AdminNav';
 import { DashboardCard } from '@/components/DashboardCard';
-export default function AdminAnalyticsPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Marketplace analytics</h1><div className="mt-8 grid gap-5 md:grid-cols-4"><DashboardCard title="Conversion" value="7.8%" note="Search-to-order funnel" /><DashboardCard title="AOV" value="$86.42" note="Average order value" /><DashboardCard title="Search CTR" value="31%" note="Suggestion engagement" /><DashboardCard title="Return rate" value="2.4%" note="Post-order quality" /></div><div className="mt-8 rounded-3xl bg-white p-6 shadow-card"><h2 className="text-2xl font-black">Search trends</h2><div className="mt-4 grid gap-3 md:grid-cols-5">{['headphones','air fryer','running shoes','gift cards','4k camera'].map((q,i)=><div key={q} className="rounded-2xl bg-slate-50 p-4"><p className="font-black">{q}</p><p className="text-sm text-slate-600">{1200 - i*140} searches</p></div>)}</div></div></div>; }
+
+export default function AdminAnalyticsPage() {
+  return (
+    <div>
+      <p className="page-kicker">Insights</p>
+      <h1 className="mt-2">Marketplace analytics</h1>
+      <div className="mt-10 grid gap-4 md:grid-cols-4">
+        <DashboardCard title="Conversion" value="7.8%" note="Search-to-order funnel" />
+        <DashboardCard title="AOV" value="$86.42" note="Average order value" />
+        <DashboardCard title="Search CTR" value="31%" note="Suggestion engagement" />
+        <DashboardCard title="Return rate" value="2.4%" note="Post-order quality" />
+      </div>
+      <section className="mt-10">
+        <h2>Search trends</h2>
+        <div className="mt-4 divide-y divide-line border-y border-line">
+          {['headphones', 'air fryer', 'running shoes', 'gift cards', '4k camera'].map((q, i) => (
+            <div key={q} className="flex justify-between py-3 text-sm">
+              <p>{q}</p>
+              <p className="tabular-nums text-muted">{1200 - i * 140} searches</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}

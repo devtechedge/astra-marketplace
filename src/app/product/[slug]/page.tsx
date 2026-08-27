@@ -11,5 +11,128 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = findProduct(params.slug);
   if (!product) return notFound();
   const related = products.filter(p => p.department === product.department && p.id !== product.id).slice(0, 3);
-  return <div className="container-page py-10"><div className="grid gap-10 lg:grid-cols-[1fr_1fr_320px]"><section className="space-y-4"><div className="relative aspect-square overflow-hidden rounded-[2rem] bg-white shadow-card"><Image src={product.image} alt={product.title} fill className="object-cover" unoptimized /></div><div className="grid grid-cols-3 gap-3">{product.images.map((img, i) => <div key={i} className="relative aspect-square overflow-hidden rounded-2xl bg-white"><Image src={img} alt="" fill className="object-cover" unoptimized /></div>)}</div></section><section><p className="font-bold text-brand">{product.brand} · {product.department}</p><h1 className="mt-2 text-4xl font-black">{product.title}</h1><div className="mt-3"><Stars rating={product.rating} /> <Link href="#reviews" className="text-sm font-bold text-brand">{product.reviewCount} ratings</Link></div><div className="mt-5"><span className="text-4xl font-black">{formatMoney(product.price)}</span><span className="ml-3 text-slate-400 line-through">{formatMoney(product.listPrice)}</span></div><p className="mt-4 text-slate-700">{product.description}</p><div className="mt-6 space-y-4">{product.variants.map(v => <div key={v.name}><p className="font-bold">{v.name}</p><div className="mt-2 flex flex-wrap gap-2">{v.values.map(value => <button key={value} className="rounded-full border px-4 py-2 text-sm font-semibold hover:border-brand">{value}</button>)}</div></div>)}</div><div className="mt-8 rounded-3xl bg-white p-5 shadow-card"><h2 className="font-black">Product specifications</h2><dl className="mt-3 grid grid-cols-2 gap-3 text-sm">{Object.entries(product.specs).map(([k, v]) => <div key={k} className="rounded-xl bg-slate-50 p-3"><dt className="font-bold">{k}</dt><dd>{v}</dd></div>)}</dl></div></section><aside className="h-fit rounded-3xl bg-white p-6 shadow-card"><p className="text-3xl font-black">{formatMoney(product.price)}</p><p className="mt-3 font-bold text-emerald-700">{product.delivery}</p><p className="mt-2 text-sm text-slate-600">Ships from {product.fulfillment}. Sold by {product.sellerName}.</p><p className="mt-4 text-sm"><strong>{product.stock}</strong> units available</p><div className="mt-6 grid gap-3"><AddToCartButton productId={product.id} /><AddToCartButton productId={product.id} label="Buy now" /><button className="rounded-full border px-6 py-3 font-bold">Add to wishlist</button></div><div className="mt-5 rounded-2xl bg-amber-50 p-4 text-sm"><strong>Protection plan:</strong> Add 2-year accident coverage at checkout.</div><div className="mt-4 text-sm text-slate-600">Secure transaction · Return eligible · Gift options available · Installment placeholder</div></aside></div><section className="mt-12 grid gap-8 lg:grid-cols-3"><div className="rounded-3xl bg-white p-6 shadow-card"><h2 className="text-2xl font-black">Compare seller offers</h2>{sellers.slice(0,3).map((s, i) => <div key={s.id} className="mt-4 rounded-2xl bg-slate-50 p-4"><p className="font-bold">{s.name}</p><p className="text-sm text-slate-600">Rating {s.rating} · {i === 0 ? 'Best delivery' : 'Standard delivery'}</p><p className="mt-1 font-black">{formatMoney(product.price + i * 4)}</p></div>)}</div><div className="rounded-3xl bg-white p-6 shadow-card"><h2 className="text-2xl font-black">Questions & answers</h2><button className="mt-3 rounded-full border px-4 py-2 text-sm font-bold">Ask a question</button>{product.questions.map(qa => <div key={qa.q} className="mt-4 border-t pt-4"><p className="font-bold">Q: {qa.q}</p><p className="mt-1 text-slate-600">A: {qa.a}</p></div>)}</div><div id="reviews" className="rounded-3xl bg-white p-6 shadow-card"><h2 className="text-2xl font-black">Customer reviews</h2><div className="mt-3 space-y-2">{[5,4,3,2,1].map((n, i) => <div key={n} className="flex items-center gap-3 text-sm"><span>{n} star</span><div className="h-2 flex-1 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-amber-500" style={{ width: `${70 - i * 13}%` }} /></div></div>)}</div>{product.reviews.map(r => <div key={r.title} className="mt-4 border-t pt-4"><Stars rating={r.rating} /> <strong>{r.title}</strong><span className="ml-2 rounded bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700">Verified purchase</span><p className="text-sm text-slate-500">By {r.user}</p><p className="mt-1 text-slate-700">{r.body}</p><button className="mt-2 text-sm font-bold text-brand">Helpful</button></div>)}</div></section>{related.length > 0 && <section className="mt-12"><h2 className="mb-5 text-3xl font-black">Related products</h2><div className="grid gap-6 md:grid-cols-3">{related.map(p => <ProductCard key={p.id} product={p} />)}</div></section>}</div>;
+  const onSale = product.price < product.listPrice;
+  return (
+    <div className="container-page py-10 md:py-16">
+      <div className="grid gap-10 lg:grid-cols-[1fr_1fr_280px]">
+        <section>
+          <div className="relative aspect-square overflow-hidden border border-line bg-surface">
+            <Image src={product.image} alt={product.title} fill className="object-cover" unoptimized />
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-3">
+            {product.images.map((img, i) => (
+              <div key={i} className="relative aspect-square overflow-hidden border border-line bg-surface">
+                <Image src={img} alt="" fill className="object-cover" unoptimized />
+              </div>
+            ))}
+          </div>
+        </section>
+        <section>
+          <p className="page-kicker">{product.brand} · {product.department}</p>
+          {product.badge && <span className="chip chip-sale mt-3 inline-block">{product.badge}</span>}
+          <h1 className="mt-3">{product.title}</h1>
+          <div className="mt-3 text-sm">
+            <Stars rating={product.rating} />{' '}
+            <Link href="#reviews" className="btn-quiet ml-2 text-sm">{product.reviewCount} ratings</Link>
+          </div>
+          <div className="mt-6 flex items-baseline gap-3">
+            <span className={`font-display text-3xl ${onSale ? 'price-sale' : ''}`}>{formatMoney(product.price)}</span>
+            {onSale && <span className="price-list text-lg">{formatMoney(product.listPrice)}</span>}
+          </div>
+          <p className="mt-6 text-muted">{product.description}</p>
+          <div className="mt-6 space-y-4">
+            {product.variants.map(v => (
+              <div key={v.name}>
+                <p className="text-sm font-medium">{v.name}</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {v.values.map(value => (
+                    <button key={value} className="border border-line px-4 py-2 text-sm hover:border-ink">{value}</button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 border-t border-line pt-6">
+            <h2>Specifications</h2>
+            <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+              {Object.entries(product.specs).map(([k, v]) => (
+                <div key={k} className="border-b border-line pb-3">
+                  <dt className="text-muted">{k}</dt>
+                  <dd className="mt-1">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+        <aside className="panel sticky top-24 h-fit p-6">
+          <p className={`font-display text-2xl ${onSale ? 'price-sale' : ''}`}>{formatMoney(product.price)}</p>
+          <p className="mt-3 text-sm text-success">{product.delivery}</p>
+          <p className="mt-2 text-sm text-muted">Ships from {product.fulfillment}. Sold by {product.sellerName}.</p>
+          <p className="mt-4 text-sm"><strong className="tabular-nums">{product.stock}</strong> in stock</p>
+          <div className="mt-6 grid gap-3">
+            <AddToCartButton productId={product.id} />
+            <AddToCartButton productId={product.id} label="Buy now" />
+            <button className="btn-quiet text-sm">Add to wishlist</button>
+          </div>
+          <p className="mt-6 text-[12px] text-muted">Protection plan available at checkout. Returns eligible. Gift options on request.</p>
+        </aside>
+      </div>
+
+      <section className="mt-16 grid gap-10 border-t border-line pt-16 lg:grid-cols-3">
+        <div>
+          <h2>Compare seller offers</h2>
+          {sellers.slice(0, 3).map((s, i) => (
+            <div key={s.id} className="mt-4 border-b border-line pb-4">
+              <p className="font-medium">{s.name}</p>
+              <p className="text-sm text-muted">Rating {s.rating} · {i === 0 ? 'Best delivery' : 'Standard delivery'}</p>
+              <p className="mt-1 tabular-nums">{formatMoney(product.price + i * 4)}</p>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h2>Questions & answers</h2>
+          <button className="btn-quiet mt-3 text-sm">Ask a question</button>
+          {product.questions.map(qa => (
+            <div key={qa.q} className="mt-4 border-t border-line pt-4">
+              <p className="font-medium">Q: {qa.q}</p>
+              <p className="mt-1 text-sm text-muted">A: {qa.a}</p>
+            </div>
+          ))}
+        </div>
+        <div id="reviews">
+          <h2>Customer reviews</h2>
+          <div className="mt-4 space-y-2">
+            {[5, 4, 3, 2, 1].map((n, i) => (
+              <div key={n} className="flex items-center gap-3 text-sm">
+                <span className="w-12 text-muted">{n} star</span>
+                <div className="h-1 flex-1 bg-line">
+                  <div className="h-1 bg-ink" style={{ width: `${70 - i * 13}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+          {product.reviews.map(r => (
+            <div key={r.title} className="mt-6 border-t border-line pt-4">
+              <Stars rating={r.rating} />
+              <strong className="ml-2">{r.title}</strong>
+              <span className="chip ml-2">Verified</span>
+              <p className="mt-1 text-sm text-muted">By {r.user}</p>
+              <p className="mt-2 text-sm">{r.body}</p>
+              <button className="btn-quiet mt-2 text-sm">Helpful</button>
+            </div>
+          ))}
+          <Link href="/reviews/write" className="btn-quiet mt-4 inline-block text-sm">Write a review</Link>
+        </div>
+      </section>
+
+      {related.length > 0 && (
+        <section className="mt-16 border-t border-line pt-16">
+          <h2 className="mb-6">Related</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            {related.map(p => <ProductCard key={p.id} product={p} />)}
+          </div>
+        </section>
+      )}
+    </div>
+  );
 }

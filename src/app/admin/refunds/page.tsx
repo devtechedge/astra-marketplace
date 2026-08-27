@@ -1,4 +1,28 @@
-import { AdminNav } from '@/components/admin/AdminNav';
 import { returnRequests } from '@/lib/expansionData';
 import { formatMoney } from '@/lib/commerce';
-export default function AdminRefundsPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Returns and refund approvals</h1><div className="mt-6 space-y-4">{returnRequests.map(r => <article key={r.id} className="rounded-3xl bg-white p-6 shadow-card"><div className="flex justify-between"><div><h2 className="font-black">{r.rma}</h2><p className="text-slate-600">{r.productTitle} · {r.reason}</p></div><strong>{formatMoney(r.amount)}</strong></div><div className="mt-4 flex gap-3"><button className="rounded-full bg-emerald-600 px-5 py-2 font-bold text-white">Approve refund</button><button className="rounded-full border px-5 py-2 font-bold">Inspect return</button></div></article>)}</div></div>; }
+
+export default function AdminRefundsPage() {
+  return (
+    <div>
+      <p className="page-kicker">Finance</p>
+      <h1 className="mt-2">Returns and refunds</h1>
+      <div className="mt-10 divide-y divide-line border-y border-line">
+        {returnRequests.map(r => (
+          <article key={r.id} className="py-6">
+            <div className="flex justify-between gap-3">
+              <div>
+                <h2 className="text-lg">{r.rma}</h2>
+                <p className="text-sm text-muted">{r.productTitle} · {r.reason}</p>
+              </div>
+              <strong className="tabular-nums">{formatMoney(r.amount)}</strong>
+            </div>
+            <div className="mt-4 flex gap-3">
+              <button className="btn btn-solid">Approve refund</button>
+              <button className="btn btn-ghost">Inspect return</button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}

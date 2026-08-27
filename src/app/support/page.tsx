@@ -1,1 +1,20 @@
-export default function SupportPage() { return <div className="container-page py-10"><h1 className="text-4xl font-black">Open a support ticket</h1><form className="mt-8 max-w-2xl rounded-3xl bg-white p-6 shadow-card"><label className="block font-bold">Subject<input className="mt-1 w-full rounded-xl border px-4 py-3" placeholder="How can we help?" /></label><label className="mt-4 block font-bold">Order ID<input className="mt-1 w-full rounded-xl border px-4 py-3" placeholder="Optional" /></label><label className="mt-4 block font-bold">Details<textarea className="mt-1 min-h-36 w-full rounded-xl border px-4 py-3" placeholder="Describe the issue" /></label><button className="mt-5 rounded-full bg-brand px-6 py-3 font-bold text-white">Submit ticket</button></form></div>; }
+export default function SupportPage() {
+  return (
+    <div className="container-page py-10 md:py-16">
+      <p className="page-kicker">Support</p>
+      <h1 className="mt-2">Open a support ticket</h1>
+      <form className="mt-10 max-w-xl space-y-4">
+        <label className="label">Subject
+          <input className="field" placeholder="How can we help?" />
+        </label>
+        <label className="label">Order ID
+          <input className="field" placeholder="Optional" />
+        </label>
+        <label className="label">Details
+          <textarea className="field min-h-36" placeholder="Describe the issue" />
+        </label>
+        <button className="btn btn-solid">Submit ticket</button>
+      </form>
+    </div>
+  );
+}

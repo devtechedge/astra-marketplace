@@ -1,2 +1,17 @@
-import { SellerNav } from '@/components/seller/SellerNav';
-export default function SellerSupportPage() { return <div className="container-page py-10"><SellerNav /><h1 className="text-4xl font-black">Seller support and compliance</h1><div className="mt-8 grid gap-5 md:grid-cols-3">{['Policy warnings', 'Listing appeals', 'Payout support', 'Buyer messages', 'Performance coaching', 'Compliance documents'].map(x => <div key={x} className="rounded-3xl bg-white p-6 shadow-card"><h2 className="font-black">{x}</h2><p className="mt-2 text-sm text-slate-600">Operational workflow and ticket escalation placeholder.</p></div>)}</div></div>; }
+export default function SellerSupportPage() {
+  const items = ['Policy warnings', 'Listing appeals', 'Payout support', 'Buyer messages', 'Performance coaching', 'Compliance documents'];
+  return (
+    <div>
+      <p className="page-kicker">Support</p>
+      <h1 className="mt-2">Compliance and support</h1>
+      <div className="mt-10 grid gap-px border border-line bg-line md:grid-cols-3">
+        {items.map(x => (
+          <div key={x} className="bg-surface p-6">
+            <h2 className="text-lg">{x}</h2>
+            <p className="mt-2 text-sm text-muted">Operational workflow and ticket escalation placeholder.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

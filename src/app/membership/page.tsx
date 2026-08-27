@@ -1,1 +1,23 @@
-export default function MembershipPage() { return <div className="container-page py-10"><section className="rounded-[2rem] bg-gradient-to-br from-brand to-ink p-10 text-white shadow-card"><p className="font-bold text-amber-300">AstraPlus</p><h1 className="mt-2 text-5xl font-black">Faster delivery, exclusive deals, more convenience.</h1><p className="mt-4 max-w-2xl text-indigo-100">Original membership module with free shipping flag, exclusive product access, renewal status and admin-managed benefits.</p><button className="mt-8 rounded-full bg-coral px-7 py-3 font-bold">Start demo membership</button></section><div className="mt-8 grid gap-5 md:grid-cols-3">{['Free priority shipping', 'Member-only deals', 'Early access events'].map(x => <div key={x} className="rounded-3xl bg-white p-6 shadow-card"><h2 className="font-black">{x}</h2><p className="mt-2 text-sm text-slate-600">Configurable via admin feature flags and promotions.</p></div>)}</div></div>; }
+export default function MembershipPage() {
+  const benefits = [
+    ['Free priority shipping', 'On eligible AstraFulfilled orders.'],
+    ['Member-only deals', 'Early access to marked-down inventory.'],
+    ['Returns made simpler', 'Prepaid labels on most categories.']
+  ];
+  return (
+    <div className="container-page py-10 md:py-16">
+      <p className="page-kicker">AstraPlus</p>
+      <h1 className="mt-2 max-w-xl">Members ship free. That is the offer.</h1>
+      <p className="page-lead">$79 a year. Configurable via admin feature flags and promotions.</p>
+      <button className="btn btn-solid mt-10">Start demo membership</button>
+      <dl className="mt-16 grid gap-10 border-t border-line pt-10 md:grid-cols-3">
+        {benefits.map(([t, d]) => (
+          <div key={t}>
+            <dt className="font-display text-xl">{t}</dt>
+            <dd className="mt-2 text-sm text-muted">{d}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}

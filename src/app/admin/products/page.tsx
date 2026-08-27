@@ -1,3 +1,36 @@
-import { AdminNav } from '@/components/admin/AdminNav';
 import { products } from '@/lib/demoData';
-export default function AdminProductsPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Product moderation</h1><div className="mt-6 rounded-3xl bg-white p-6 shadow-card"><table className="w-full text-left text-sm"><thead><tr className="border-b"><th className="py-3">Listing</th><th>Seller</th><th>Category</th><th>Risk</th><th>Actions</th></tr></thead><tbody>{products.map((p,i) => <tr key={p.id} className="border-b"><td className="py-3 font-bold">{p.title}</td><td>{p.sellerName}</td><td>{p.department}</td><td>{i % 3 === 0 ? 'Needs review' : 'Low'}</td><td className="font-bold text-brand">Approve · Reject · Request changes</td></tr>)}</tbody></table></div></div>; }
+
+export default function AdminProductsPage() {
+  return (
+    <div>
+      <p className="page-kicker">Catalog</p>
+      <h1 className="mt-2">Product moderation</h1>
+      <div className="mt-6 overflow-x-auto">
+        <table className="ops-table">
+          <thead>
+            <tr>
+              <th>Listing</th><th>Seller</th><th>Category</th><th>Risk</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((p, i) => (
+              <tr key={p.id}>
+                <td className="font-medium">{p.title}</td>
+                <td>{p.sellerName}</td>
+                <td>{p.department}</td>
+                <td>{i % 3 === 0 ? 'Needs review' : 'Low'}</td>
+                <td>
+                  <button className="btn-quiet text-sm">Approve</button>
+                  <span className="mx-2 text-line">·</span>
+                  <button className="btn-quiet text-sm">Reject</button>
+                  <span className="mx-2 text-line">·</span>
+                  <button className="btn-quiet text-sm">Request changes</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

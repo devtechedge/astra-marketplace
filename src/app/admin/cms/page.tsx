@@ -1,3 +1,22 @@
-import { AdminNav } from '@/components/admin/AdminNav';
 import { homepageModules } from '@/lib/expansionData';
-export default function AdminCmsPage() { return <div className="container-page py-10"><AdminNav /><h1 className="text-4xl font-black">Homepage CMS modules</h1><p className="mt-2 text-slate-600">Schedule, reorder and personalize storefront modules.</p><div className="mt-6 space-y-4">{homepageModules.sort((a,b)=>a.position-b.position).map(m => <article key={m.id} className="rounded-3xl bg-white p-6 shadow-card"><div className="flex justify-between"><div><h2 className="font-black">#{m.position} {m.title}</h2><p className="text-slate-600">{m.type} · {m.audience}</p></div><span className="font-bold text-emerald-700">{m.active ? 'Active' : 'Paused'}</span></div></article>)}</div></div>; }
+
+export default function AdminCmsPage() {
+  return (
+    <div>
+      <p className="page-kicker">Storefront</p>
+      <h1 className="mt-2">Homepage CMS</h1>
+      <p className="page-lead">Schedule, reorder and personalize storefront modules.</p>
+      <div className="mt-10 divide-y divide-line border-y border-line">
+        {homepageModules.sort((a, b) => a.position - b.position).map(m => (
+          <article key={m.id} className="flex justify-between gap-3 py-4">
+            <div>
+              <h2 className="text-lg">#{m.position} {m.title}</h2>
+              <p className="text-sm text-muted">{m.type} · {m.audience}</p>
+            </div>
+            <span className={`text-sm ${m.active ? 'text-success' : 'text-muted'}`}>{m.active ? 'Active' : 'Paused'}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}

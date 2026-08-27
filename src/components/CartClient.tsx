@@ -10,25 +10,73 @@ export function CartClient() {
   const [cart, setCart] = useState<{ productId: string; quantity: number }[]>([]);
   const [coupon, setCoupon] = useState('');
   useEffect(() => setCart(JSON.parse(localStorage.getItem('astra-cart') || '[]')), []);
-  function save(next: typeof cart) { setCart(next); localStorage.setItem('astra-cart', JSON.stringify(next)); }
+  function save(next: typeof cart) {
+    setCart(next);
+    localStorage.setItem('astra-cart', JSON.stringify(next));
+    window.dispatchEvent(new Event('astra-cart-updated'));
+  }
   const summary = useMemo(() => calculateCart(cart, coupon), [cart, coupon]);
-  if (!cart.length) return <div className="rounded-3xl bg-white p-10 text-center shadow-card"><h1 className="text-3xl font-black">Your cart is empty</h1><p className="mt-2 text-slate-600">Browse deals and add products to start checkout.</p><Link href="/" className="mt-6 inline-block rounded-full bg-brand px-6 py-3 font-bold text-white">Continue shopping</Link></div>;
+  if (!cart.length) {
+    return (
+      <div className="mx-auto max-w-lg py-16 text-center">
+        <h1>Your cart is empty</h1>
+        <p className="page-lead mx-auto">Browse the shop and add something you actually want.</p>
+        <Link href="/" className="btn btn-solid mt-6">Continue shopping</Link>
+      </div>
+    );
+  }
   return (
-    <div data-testid="shopping-cart" className="grid gap-8 lg:grid-cols-[1fr_360px]">
-      <section className="rounded-3xl bg-white p-6 shadow-card">
-        <h1 className="text-3xl font-black">Shopping Cart</h1>
-        <div className="mt-6 divide-y">
+    <div data-testid="shopping-cart" className="grid gap-10 lg:grid-cols-[1fr_320px]">
+      <section>
+        <h1>Shopping cart</h1>
+        <div className="mt-6 divide-y divide-line border-y border-line">
           {cart.map(item => {
             const product = products.find(p => p.id === item.productId)!;
-            return <div key={item.productId} className="flex gap-4 py-5"><div className="relative size-28 overflow-hidden rounded-2xl bg-slate-100"><Image src={product.image} alt="" fill className="object-cover" unoptimized /></div><div className="flex-1"><Link href={`/product/${product.slug}`} className="font-bold hover:text-brand">{product.title}</Link><p className="text-sm text-emerald-700">In stock · {product.delivery}</p><div className="mt-3 flex items-center gap-3"><select value={item.quantity} onChange={e => save(cart.map(i => i.productId === item.productId ? { ...i, quantity: Number(e.target.value) } : i))} className="rounded border px-3 py-2">{Array.from({ length: 10 }, (_, i) => i + 1).map(n => <option key={n}>{n}</option>)}</select><button onClick={() => save(cart.filter(i => i.productId !== item.productId))} className="text-sm font-bold text-rose-600">Remove</button><button className="text-sm font-bold text-brand">Save for later</button></div></div><strong>{formatMoney(product.price * item.quantity)}</strong></div>;
+            return (
+              <div key={item.productId} className="flex gap-4 py-6">
+                <div className="relative size-24 shrink-0 overflow-hidden border border-line bg-surface">
+                  <Image src={product.image} alt="" fill className="object-cover" unoptimized />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <Link href={`/product/${product.slug}`} className="font-display text-lg leading-snug hover:text-muted">{product.title}</Link>
+                  <p className="mt-1 text-sm text-success">{product.delivery}</p>
+                  <div className="mt-3 flex flex-wrap items-center gap-4">
+                    <select
+                      value={item.quantity}
+                      onChange={e => save(cart.map(i => i.productId === item.productId ? { ...i, quantity: Number(e.target.value) } : i))}
+                      className="field w-20 py-2"
+                      aria-label="Quantity"
+                    >
+                      {Array.from({ length: 10 }, (_, i) => i + 1).map(n => <option key={n}>{n}</option>)}
+                    </select>
+                    <button onClick={() => save(cart.filter(i => i.productId !== item.productId))} className="btn-quiet text-sm text-danger">Remove</button>
+                    <button className="btn-quiet text-sm">Save for later</button>
+                  </div>
+                </div>
+                <strong className="tabular-nums">{formatMoney(product.price * item.quantity)}</strong>
+              </div>
+            );
           })}
         </div>
       </section>
-      <aside className="h-fit rounded-3xl bg-white p-6 shadow-card">
-        <h2 className="text-xl font-black">Order summary</h2>
-        <label className="mt-4 block text-sm font-bold">Coupon</label><div className="mt-1 flex gap-2"><input value={coupon} onChange={e => setCoupon(e.target.value)} placeholder="WELCOME10" className="w-full rounded-xl border px-3 py-2" /><button className="rounded-xl bg-ink px-4 text-white">Apply</button></div>
-        <dl className="mt-5 space-y-2 text-sm"><div className="flex justify-between"><dt>Subtotal</dt><dd>{formatMoney(summary.subtotal)}</dd></div><div className="flex justify-between"><dt>Discount</dt><dd>-{formatMoney(summary.discount)}</dd></div><div className="flex justify-between"><dt>Shipping</dt><dd>{summary.shipping === 0 ? 'FREE' : formatMoney(summary.shipping)}</dd></div><div className="flex justify-between"><dt>Tax estimate</dt><dd>{formatMoney(summary.tax)}</dd></div><div className="flex justify-between border-t pt-3 text-lg font-black"><dt>Total</dt><dd>{formatMoney(summary.total)}</dd></div></dl>
-        <Link href="/checkout" className="mt-6 block rounded-full bg-coral px-6 py-3 text-center font-bold text-white">Proceed to checkout</Link>
+      <aside className="panel sticky top-24 h-fit p-6">
+        <h2>Order summary</h2>
+        <label className="label mt-4">Coupon</label>
+        <div className="mt-1 flex gap-2">
+          <input value={coupon} onChange={e => setCoupon(e.target.value)} placeholder="WELCOME10" className="field" />
+          <button className="btn btn-ghost px-4">Apply</button>
+        </div>
+        <dl className="mt-6 space-y-2 text-sm">
+          <div className="flex justify-between"><dt className="text-muted">Subtotal</dt><dd className="tabular-nums">{formatMoney(summary.subtotal)}</dd></div>
+          <div className="flex justify-between"><dt className="text-muted">Discount</dt><dd className="tabular-nums">-{formatMoney(summary.discount)}</dd></div>
+          <div className="flex justify-between"><dt className="text-muted">Shipping</dt><dd className="tabular-nums">{summary.shipping === 0 ? 'Free' : formatMoney(summary.shipping)}</dd></div>
+          <div className="flex justify-between"><dt className="text-muted">Tax estimate</dt><dd className="tabular-nums">{formatMoney(summary.tax)}</dd></div>
+          <div className="flex justify-between border-t border-line pt-3 font-medium">
+            <dt>Total</dt>
+            <dd className="tabular-nums">{formatMoney(summary.total)}</dd>
+          </div>
+        </dl>
+        <Link href="/checkout" className="btn btn-solid mt-6 w-full">Proceed to checkout</Link>
       </aside>
     </div>
   );

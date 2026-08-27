@@ -1,3 +1,22 @@
-import { SellerNav } from '@/components/seller/SellerNav';
 const steps = ['Business information', 'Tax identity placeholder', 'Bank/payout setup', 'Shipping origin', 'Store profile', 'Policy acceptance', 'Admin approval'];
-export default function SellerOnboardingPage() { return <div className="container-page py-10"><SellerNav /><h1 className="text-4xl font-black">Seller onboarding</h1><p className="mt-2 text-slate-600">Multi-step production-style onboarding flow.</p><div className="mt-8 grid gap-5 md:grid-cols-2">{steps.map((s,i) => <div key={s} className="rounded-3xl bg-white p-6 shadow-card"><p className="text-sm font-bold text-mint">Step {i+1}</p><h2 className="mt-1 text-xl font-black">{s}</h2><p className="mt-2 text-sm text-slate-600">Collect, validate and submit {s.toLowerCase()} for marketplace review.</p></div>)}</div></div>; }
+
+export default function SellerOnboardingPage() {
+  return (
+    <div>
+      <p className="page-kicker">Get started</p>
+      <h1 className="mt-2">Seller onboarding</h1>
+      <p className="page-lead">Multi-step production-style onboarding flow.</p>
+      <ol className="mt-10 space-y-0 border-t border-line">
+        {steps.map((s, i) => (
+          <li key={s} className="flex gap-4 border-b border-line py-4">
+            <span className="w-8 tabular-nums text-muted">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h2 className="text-lg">{s}</h2>
+              <p className="mt-1 text-sm text-muted">Collect, validate and submit {s.toLowerCase()} for marketplace review.</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}

@@ -1,1 +1,20 @@
-export default function GiftCardsPage() { return <div className="container-page py-10"><section className="rounded-[2rem] bg-gradient-to-br from-coral to-amber-500 p-10 text-white shadow-card"><h1 className="text-5xl font-black">Gift cards and store credit</h1><p className="mt-4 max-w-2xl text-white/90">Stored-value ledger demo for redemptions, refunds and promotional credits.</p><button className="mt-8 rounded-full bg-white px-7 py-3 font-bold text-coral">Buy gift card</button></section><div className="mt-8 rounded-3xl bg-white p-6 shadow-card"><h2 className="text-2xl font-black">Balance</h2><p className="mt-2 text-4xl font-black text-emerald-700">$42.18</p><p className="text-slate-600">Available store credit and gift card balance.</p></div></div>; }
+export default function GiftCardsPage() {
+  return (
+    <div className="container-page py-10 md:py-16">
+      <p className="page-kicker">Stored value</p>
+      <h1 className="mt-2 max-w-xl">Gift cards and store credit</h1>
+      <p className="page-lead">A credit, not a gimmick. Redemptions, refunds and promotional balances on one ledger.</p>
+      <div className="mt-10 flex flex-wrap gap-3">
+        {['$25', '$50', '$100', '$200'].map(a => (
+          <button key={a} className="btn btn-ghost">{a}</button>
+        ))}
+      </div>
+      <button className="btn btn-solid mt-6">Buy gift card</button>
+      <div className="mt-16 border-t border-line pt-10">
+        <p className="page-kicker">Balance</p>
+        <p className="mt-2 font-display text-4xl tabular-nums">$42.18</p>
+        <p className="mt-2 text-sm text-muted">Available store credit and gift card balance.</p>
+      </div>
+    </div>
+  );
+}

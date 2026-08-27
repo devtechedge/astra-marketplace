@@ -1,1 +1,21 @@
-export default function RegisterPage() { return <div className="container-page grid min-h-[70vh] place-items-center py-10"><div className="w-full max-w-lg rounded-[2rem] bg-white p-8 shadow-card"><h1 className="text-3xl font-black">Create your AstraMart account</h1><p className="mt-2 text-slate-600">Registration, email verification placeholder and secure session creation.</p><form className="mt-6 grid gap-4"><input className="rounded-xl border px-4 py-3" placeholder="Full name" /><input className="rounded-xl border px-4 py-3" placeholder="Email" /><input className="rounded-xl border px-4 py-3" placeholder="Password" type="password" /><select className="rounded-xl border px-4 py-3"><option>Customer</option><option>Seller</option></select><button className="rounded-full bg-brand px-6 py-3 font-bold text-white">Create account</button></form></div></div>; }
+export default function RegisterPage() {
+  return (
+    <div className="container-page grid min-h-[70vh] place-items-center py-16">
+      <div className="w-full max-w-md">
+        <p className="page-kicker">Account</p>
+        <h1 className="mt-2">Create your account</h1>
+        <p className="page-lead">Registration, email verification placeholder and secure session creation.</p>
+        <form className="mt-6 grid gap-4">
+          <input className="field" placeholder="Full name" />
+          <input className="field" placeholder="Email" />
+          <input className="field" placeholder="Password" type="password" />
+          <select className="field">
+            <option>Customer</option>
+            <option>Seller</option>
+          </select>
+          <button className="btn btn-solid">Create account</button>
+        </form>
+      </div>
+    </div>
+  );
+}

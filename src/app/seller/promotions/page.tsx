@@ -1,2 +1,17 @@
-import { SellerNav } from '@/components/seller/SellerNav';
-export default function SellerPromotionsPage() { return <div className="container-page py-10"><SellerNav /><h1 className="text-4xl font-black">Seller promotions</h1><div className="mt-8 grid gap-5 md:grid-cols-3">{['Percentage discount', 'Coupon clipping', 'Limited-time deal', 'Bundle offer', 'Sponsored placement', 'Member exclusive'].map(x => <div key={x} className="rounded-3xl bg-white p-6 shadow-card"><h2 className="font-black">{x}</h2><p className="mt-2 text-sm text-slate-600">Create, schedule, budget and submit for review.</p></div>)}</div></div>; }
+export default function SellerPromotionsPage() {
+  const items = ['Percentage discount', 'Coupon clipping', 'Limited-time deal', 'Bundle offer', 'Sponsored placement', 'Member exclusive'];
+  return (
+    <div>
+      <p className="page-kicker">Merchandising</p>
+      <h1 className="mt-2">Seller promotions</h1>
+      <div className="mt-10 grid gap-px border border-line bg-line md:grid-cols-3">
+        {items.map(x => (
+          <div key={x} className="bg-surface p-6">
+            <h2 className="text-lg">{x}</h2>
+            <p className="mt-2 text-sm text-muted">Create, schedule, budget and submit for review.</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
