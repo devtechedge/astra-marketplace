@@ -1,5 +1,13 @@
 # AstraMart “Even Closer to Production Amazon-Level” Feature Expansion Plan
 
+## Status as of 2026-08-28
+
+Service/repository architecture and many of the workflows described below were implemented (see `EVEN_CLOSER_PARITY_IMPLEMENTED.md`). A later restyle, catalog, and security pass landed as changelog **1.3.0** (PRs #2–#5: paper/copper design, 18-SKU JPEG catalog, gift cards, overlay scrollbars) and **1.4.0** (PR #6: HMAC sessions, bcrypt server-only users, API RBAC, origin checks, auth rate limits, webhook secret, CSP without unsafe-eval, checkout requires login).
+
+The plan below is **historical intent**, not a claim that every item is unfinished. Remaining live gaps are still Prisma-on-Vercel, Stripe, Redis, object storage, and a real IdP — not “tests never ran” or unsigned cookie sessions.
+
+---
+
 ## Purpose
 
 AstraMart already has a strong marketplace demo with storefront, seller portal, admin portal, checkout, returns, notifications, analytics, and operational screens. The next phase should move it from “impressive portfolio marketplace” to “this feels like a real large-scale commerce platform.” The goal is still not to copy Amazon’s trademarks, protected branding, layouts, logos, or proprietary assets. The goal is to create an original marketplace whose depth, polish, workflows, and operational completeness make a visitor feel that almost every expected real marketplace capability is present.
