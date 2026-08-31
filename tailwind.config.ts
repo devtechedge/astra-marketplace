@@ -5,14 +5,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        paper: '#F4EFE6',
-        surface: '#FFFCF7',
-        ink: '#1A1612',
-        muted: '#6B645C',
-        line: '#E4DCD0',
-        copper: '#C45C26',
-        success: '#2F6B4F',
-        danger: '#9B2C2C'
+        paper: 'var(--paper)',
+        surface: 'var(--surface)',
+        ink: 'var(--ink)',
+        muted: 'var(--muted)',
+        line: 'var(--line)',
+        copper: 'var(--copper)',
+        success: 'var(--success)',
+        danger: 'var(--danger)'
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'IBM Plex Sans', 'system-ui', 'sans-serif'],

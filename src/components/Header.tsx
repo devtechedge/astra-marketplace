@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { categories } from '@/lib/demoData';
 import { SearchAutocomplete } from '@/components/search/SearchAutocomplete';
 import { CartCount } from '@/components/CartCount';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 function StarMark() {
   return (
@@ -43,6 +44,7 @@ export function Header() {
               Cart
               <CartCount />
             </Link>
+            <ThemeToggle />
           </nav>
         </div>
         <div className="pb-3 md:hidden">
