@@ -14,7 +14,7 @@ Independent paper-and-copper marketplace demo with a customer storefront, seller
 
 **https://astra-marketplace.vercel.app/**
 
-> **Demo-mode status:** The live Vercel site uses seeded in-memory demo data and mock payments — not Prisma. Catalog browse, search, product photos, health, and coupon GET are public. **Checkout, account, orders, seller, and admin require sign-in.** Full Prisma/PostgreSQL schema + Docker Compose remain the local production foundation. No real payment capture, carrier labels, or object storage.
+> **Demo-mode status:** The live Vercel site uses seeded in-memory demo data and mock payments - not Prisma. Catalog browse, search, product photos, health, and coupon GET are public. **Checkout, account, orders, seller, and admin require sign-in.** Full Prisma/PostgreSQL schema + Docker Compose remain the local production foundation. No real payment capture, carrier labels, or object storage.
 
 ### Demo credentials
 
@@ -42,14 +42,14 @@ Shown on `/login` and this README on purpose for portfolio DX. Passwords are bcr
 
 ## Features
 
-- **Design system** — paper `#F4EFE6` / surface `#FFFCF7` / ink `#1A1612` / copper `#C45C26` tokens; Fraunces (display) + IBM Plex Sans via `next/font`; Fraunces wordmark with a 4-point copper star; Account menu holds Seller/Admin; overlay scrollbars hidden until overflow + hover/focus
-- **Customer storefront** — merchandising hero (not a GMV/SLA pitch), search, deals, product detail, cart, 6-step checkout (login required), orders, tracking, returns, wishlist, gift-card SKUs, AstraPlus membership
-- **18-SKU catalog** — real JPEGs in `public/products` (not SVG placeholders) across Electronics, Home & Kitchen, Fashion, Books, Beauty, Sports, Toys, Grocery, Automotive, Pet Supplies, and Gift cards. Header lists Gift cards once via `/gift-cards`
-- **Seller portal** — KPI dashboard, listings/inventory, product listing wizard, promotions, payouts, ads, support (signed session)
-- **Admin command center** — GMV/orders/refund/SLA metrics, seller & product moderation, support tickets, audit, CMS, feature flags, analytics, search merchandising (signed session)
-- **Commerce core** — coupons, tax/shipping calculation, mock payment intents, RMA-style returns, recommendation rows (buy again / trending / recently viewed)
-- **Platform services** — HMAC session middleware, API RBAC, origin checks, auth rate limits, webhook secret, CSP without `unsafe-eval`, health API, notifications, review/Q&A endpoints
-- **Production foundation** — Prisma schema, Docker Compose, GitHub Actions (unit + typecheck + Playwright), Dependabot, [SECURITY.md](SECURITY.md)
+- **Design system** - paper `#F4EFE6` / surface `#FFFCF7` / ink `#1A1612` / copper `#C45C26` tokens; Fraunces (display) + IBM Plex Sans via `next/font`; Fraunces wordmark with a 4-point copper star; Account menu holds Seller/Admin; overlay scrollbars hidden until overflow + hover/focus
+- **Customer storefront** - merchandising hero (not a GMV/SLA pitch), search, deals, product detail, cart, 6-step checkout (login required), orders, tracking, returns, wishlist, gift-card SKUs, AstraPlus membership
+- **18-SKU catalog** - real JPEGs in `public/products` (not SVG placeholders) across Electronics, Home & Kitchen, Fashion, Books, Beauty, Sports, Toys, Grocery, Automotive, Pet Supplies, and Gift cards. Header lists Gift cards once via `/gift-cards`
+- **Seller portal** - KPI dashboard, listings/inventory, product listing wizard, promotions, payouts, ads, support (signed session)
+- **Admin command center** - GMV/orders/refund/SLA metrics, seller & product moderation, support tickets, audit, CMS, feature flags, analytics, search merchandising (signed session)
+- **Commerce core** - coupons, tax/shipping calculation, mock payment intents, RMA-style returns, recommendation rows (buy again / trending / recently viewed)
+- **Platform services** - HMAC session middleware, API RBAC, origin checks, auth rate limits, webhook secret, CSP without `unsafe-eval`, health API, notifications, review/Q&A endpoints
+- **Production foundation** - Prisma schema, Docker Compose, GitHub Actions (unit + typecheck + Playwright), Dependabot, [SECURITY.md](SECURITY.md)
 
 Playwright testids kept: `site-header`, `home-hero`, `add-to-cart`, `shopping-cart`, `login-page`, `seller-dashboard`, `admin-command-center`.
 
@@ -62,7 +62,7 @@ Playwright testids kept: `site-header`, `home-hero`, `add-to-cart`, `shopping-ca
 | Data         | Prisma 5 + PostgreSQL schema (local foundation); seeded demo repository on Vercel |
 | Auth         | HMAC cookie sessions + bcrypt demo users (server-only) |
 | Tooling      | Vitest, Playwright, ESLint, GitHub Actions |
-| Deploy       | Vercel — https://astra-marketplace.vercel.app/ |
+| Deploy       | Vercel - https://astra-marketplace.vercel.app/ |
 
 
 ## Quick Start
@@ -75,7 +75,7 @@ npm run dev
 Open http://localhost:3000
 
 ```bash
-npm test            # unit — 26 passed (commerce, rbac, validation, session, origin)
+npm test            # unit - 26 passed (commerce, rbac, validation, session, origin)
 npm run typecheck
 npm run test:e2e    # Playwright Chromium smokes (signed session cookies)
 ```

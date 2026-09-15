@@ -4,7 +4,7 @@ The repo already exists at https://github.com/devtechedge/astra-marketplace. Pro
 
 ## GitHub
 
-Clone or fork `devtechedge/astra-marketplace`. Push to `main` (or open a PR) — Vercel production follows `main`. Do not `git init` a new empty repo unless you are starting a separate fork under a new name.
+Clone or fork `devtechedge/astra-marketplace`. Push to `main` (or open a PR) - Vercel production follows `main`. Do not `git init` a new empty repo unless you are starting a separate fork under a new name.
 
 CI (`.github/workflows/ci.yml`) runs unit tests, `tsc --noEmit`, and Playwright Chromium with `APP_SECRET`. Set `PAYMENT_WEBHOOK_SECRET` in the workflow env if you add webhook e2e (GitHub requires the `workflow` scope to change Actions YAML).
 
@@ -60,7 +60,7 @@ docker compose up -d
 
 ## Smoke Test
 
-- Visit `/` — paper/copper merchandising hero, Fraunces wordmark.
+- Visit `/` - paper/copper merchandising hero, Fraunces wordmark.
 - Search for headphones.
 - Open a product with a real JPEG photo.
 - Add item to cart.

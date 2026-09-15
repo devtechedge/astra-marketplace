@@ -1,4 +1,4 @@
-# Security Assessment — AstraMart (astra-marketplace)
+# Security Assessment - AstraMart (astra-marketplace)
 
 **Date:** 2026-08-28  
 **Scope:** Auth, XSS, injection, CORS, secrets, payments, RBAC  
@@ -22,7 +22,7 @@ The demo NOW has: HMAC-signed session, bcrypt demo passwords on a server-only mo
 | CORS | **N/A** | Same-origin Next.js API routes; mismatched Origin is 403 |
 | Build config | **OK** | No `ignoreBuildErrors`; `tsc --noEmit` in CI |
 
-**Overall (public Vercel demo):** Low residual risk — seeded data, mock payments, no live database or payment capture. Residual: public demo credentials, APP_SECRET fallback, mock payments, in-memory rate limit. Still not a real store.
+**Overall (public Vercel demo):** Low residual risk - seeded data, mock payments, no live database or payment capture. Residual: public demo credentials, APP_SECRET fallback, mock payments, in-memory rate limit. Still not a real store.
 
 **Overall (if this were production with real money/PII):** Do not claim NextAuth or a real payment processor. Rotate APP_SECRET, persist users, and stop publishing demo passwords.
 
@@ -80,7 +80,7 @@ The demo NOW has: HMAC-signed session, bcrypt demo passwords on a server-only mo
 
 **This pass**
 - Dropped unused `@testing-library/react` and `@testing-library/jest-dom` (unit tests are pure helpers, not the React tree).
-- **Kept** Prisma / `@prisma/client` / `bcryptjs` — they are the local production adapter + seed, not dead shadcn leftovers.
+- **Kept** Prisma / `@prisma/client` / `bcryptjs` - they are the local production adapter + seed, not dead shadcn leftovers.
 - No NextAuth, z.ai SDK, or unused Radix dump.
 
 ```bash
@@ -92,7 +92,7 @@ npm audit --omit=dev
 ## 7. Secrets & config
 
 - `.gitignore` excludes `.env`, `.env.local`.
-- `.env.example` documents `DATABASE_URL`, `APP_SECRET`, `PAYMENT_WEBHOOK_SECRET`, mock providers — no live secrets.
+- `.env.example` documents `DATABASE_URL`, `APP_SECRET`, `PAYMENT_WEBHOOK_SECRET`, mock providers - no live secrets.
 - Never commit `STRIPE_SECRET_KEY` or database passwords.
 
 ---

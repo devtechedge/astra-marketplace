@@ -4,8 +4,8 @@
 
 Automated tests **do run**. This is not a sandbox-without-install snapshot.
 
-- `npm test` — **26 passed / 0 failed** across 5 files: `commerce`, `rbac`, `validation`, `session`, `origin`.
-- `tsc --noEmit` (`npm run typecheck`) — pass.
+- `npm test` - **26 passed / 0 failed** across 5 files: `commerce`, `rbac`, `validation`, `session`, `origin`.
+- `tsc --noEmit` (`npm run typecheck`) - pass.
 - Playwright `customer-flow`: storefront hero (`home-hero` / `site-header`), add-to-cart, login page copy, admin/seller dashboards via **signed session cookies** (`astra-session` HMAC).
 - CI: GitHub Actions (`.github/workflows/ci.yml`) runs unit + typecheck + e2e Chromium with `APP_SECRET` (and `PAYMENT_WEBHOOK_SECRET` dummy CI value).
 

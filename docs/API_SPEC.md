@@ -1,10 +1,10 @@
 # API Spec
 
 Auth values used below:
-- **Public** — no session required.
-- **Public + origin + rate limit** — mutating auth endpoints: 10 requests / 10 minutes / IP; Origin host must match when present (403 otherwise).
-- **Signed session (roles)** — HMAC `astra-session` cookie; 401 if missing/invalid; 403 if role not allowed.
-- **Webhook secret** — `x-astra-webhook-secret` header compared to `PAYMENT_WEBHOOK_SECRET`.
+- **Public** - no session required.
+- **Public + origin + rate limit** - mutating auth endpoints: 10 requests / 10 minutes / IP; Origin host must match when present (403 otherwise).
+- **Signed session (roles)** - HMAC `astra-session` cookie; 401 if missing/invalid; 403 if role not allowed.
+- **Webhook secret** - `x-astra-webhook-secret` header compared to `PAYMENT_WEBHOOK_SECRET`.
 
 Role groups used by `src/lib/security/api.ts`:
 - CUSTOMER_ROLES: CUSTOMER, MEMBER, ADMIN

@@ -1,6 +1,6 @@
 # Security Review (production backlog)
 
-The public-demo threat model lives in **[SECURITY.md](../SECURITY.md)**. This file is the longer production hardening list — not a claim that the Vercel demo is already a payment-grade marketplace. Aligns with SECURITY.md as of 2026-08-28.
+The public-demo threat model lives in **[SECURITY.md](../SECURITY.md)**. This file is the longer production hardening list - not a claim that the Vercel demo is already a payment-grade marketplace. Aligns with SECURITY.md as of 2026-08-28.
 
 ## Threat Model
 
@@ -44,6 +44,6 @@ Still remaining before real money/PII:
 4. Keep Dependabot and production-dependency audit in CI.
 5. ~~Enforce server-side permission checks for every mutation.~~ **Done on the demo** via `requireSession`; keep this when wiring Prisma.
 6. Add transactional order creation and inventory locks (Prisma adapter).
-7. Remove HMAC/webhook **fallback secrets** if env is unset — required for any non-demo deploy.
+7. Remove HMAC/webhook **fallback secrets** if env is unset - required for any non-demo deploy.
 8. Real IdP (this demo does not ship NextAuth; do not claim it).
 9. Stop publishing demo passwords if this ever goes live with real accounts.

@@ -57,7 +57,7 @@ PR #6: HMAC sessions, bcrypt server-only users, API RBAC, origin checks, auth ra
 
 - HMAC-SHA256 `astra-session` cookie (httpOnly, SameSite=lax, Secure on Vercel/production, 8h). `astra-role` ignored/cleared. Missing session is GUEST.
 - bcrypt hashes in `src/lib/server/demoUsers.ts` (not in demoData / client bundle). Demo logins still customer@demo.com, seller@demo.com, admin@demo.com / Demo123!.
-- Login JSON is `{ email, role }` only — token stays in cookie. Register always CUSTOMER. Forgot/reset return `{ ok: true }` with no token leak.
+- Login JSON is `{ email, role }` only - token stays in cookie. Register always CUSTOMER. Forgot/reset return `{ ok: true }` with no token leak.
 - Middleware protects `/admin*`, `/seller*`, `/checkout*`, `/account*`, `/orders*`. Origin check on mutating `/api` except webhook.
 - `requireSession` on admin/seller/orders/payments/intents/cart/tickets/etc. Webhook: `x-astra-webhook-secret` header.
 - Auth rate limit 10/10min/IP in-memory. CSP without unsafe-eval; still unsafe-inline for Next.
