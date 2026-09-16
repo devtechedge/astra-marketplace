@@ -19,9 +19,26 @@ const sans = IBM_Plex_Sans({
 
 const THEME_BOOT = `(function(){try{var k="astra-theme";var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark")t="dark";var r=document.documentElement;r.setAttribute("data-theme",t);r.style.colorScheme=t;}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
 
+const PAGE_TITLE = 'AstraMart';
+const PAGE_DESCRIPTION =
+  'An independent paper-and-copper marketplace demo for objects worth keeping.';
+const SITE_URL = 'https://astra-marketplace.vercel.app';
+
 export const metadata: Metadata = {
-  title: 'AstraMart',
-  description: 'An independent paper-and-copper marketplace demo for objects worth keeping.',
+  title: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
+  // Shared links (LinkedIn, Slack, email) render a bare URL without these.
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: SITE_URL,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+  },
   icons: {
     icon: '/favicon.svg'
   }
