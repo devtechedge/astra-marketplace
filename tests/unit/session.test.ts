@@ -15,7 +15,10 @@ describe('HMAC session', () => {
     const [body, mac] = token.split('.');
     const tamperedJson = Buffer.from(JSON.stringify({ email: 'admin@demo.com', role: 'ADMIN', exp: Date.now() + 60_000 })).toString('base64url');
     expect(await verifySession(`${tamperedJson}.${mac}`)).toBeNull();
-    const flipped = mac.endsWith('A') ? `${mac.slice(0, -1)}B` : `${mac.slice(0, -1)}A`;
+    // Flip the FIRST character, not the last. The trailing base64url character
+    // carries padding bits, so mutating it can decode to identical bytes and the
+    // "tampered" token still verifies. Every bit of the first character counts.
+    const flipped = (mac[0] === 'A' ? 'Q' : 'A') + mac.slice(1);
     expect(await verifySession(`${body}.${flipped}`)).toBeNull();
   });
 
