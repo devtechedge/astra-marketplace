@@ -1,10 +1,11 @@
 import { ShipmentTimeline } from '@/components/fulfillment/ShipmentTimeline';
 
-export default function TrackingPage({ params }: { params: { id: string } }) {
+export default async function TrackingPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return (
     <div className="container-page py-10 md:py-16">
       <p className="page-kicker">Fulfillment</p>
-      <h1 className="mt-2">Tracking {params.id}</h1>
+      <h1 className="mt-2">Tracking {id}</h1>
       <p className="page-lead">Carrier timeline, split-shipment support and delivery exception placeholders.</p>
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_280px]">
         <ShipmentTimeline />

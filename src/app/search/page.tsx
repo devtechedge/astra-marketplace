@@ -2,9 +2,10 @@ import { ProductCard } from '@/components/ProductCard';
 import { categories } from '@/lib/demoData';
 import { searchProducts } from '@/lib/commerce';
 
-export default function SearchPage({ searchParams }: { searchParams: { q?: string; department?: string; sort?: string } }) {
-  const list = searchProducts({ q: searchParams.q, department: searchParams.department, sort: searchParams.sort });
-  const queryLabel = searchParams.q ? `“${searchParams.q}”` : searchParams.department || 'all departments';
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string; department?: string; sort?: string }> }) {
+  const filters = await searchParams;
+  const list = searchProducts({ q: filters.q, department: filters.department, sort: filters.sort });
+  const queryLabel = filters.q ? `“${filters.q}”` : filters.department || 'all departments';
   return (
     <div className="container-page py-10 md:py-16">
       <p className="page-kicker">Catalog</p>

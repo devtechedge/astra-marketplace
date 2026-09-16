@@ -7,8 +7,9 @@ import { findProduct, formatMoney } from '@/lib/commerce';
 import { products, sellers } from '@/lib/demoData';
 import { ProductCard } from '@/components/ProductCard';
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = findProduct(params.slug);
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = findProduct(slug);
   if (!product) return notFound();
   const related = products.filter(p => p.department === product.department && p.id !== product.id).slice(0, 3);
   const onSale = product.price < product.listPrice;
