@@ -51,8 +51,8 @@ export function Header() {
           <SearchAutocomplete />
         </div>
       </div>
-      <div className="border-t border-line bg-paper overflow-x-clip">
-        <div className="container-page flex min-w-0 gap-4 overflow-x-auto overscroll-x-contain py-2.5 text-[13px] text-muted sm:gap-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="border-t border-line bg-paper">
+        <div className="container-page flex min-w-0 gap-4 overflow-x-auto overscroll-x-contain py-2.5 text-[13px] text-muted sm:gap-6 [scrollbar-width:thin]">
           <Link href="/deals" className="shrink-0 whitespace-nowrap hover:text-ink">Deals</Link>
           {categories.filter(c => c !== 'Gift cards').map(c => (
             <Link key={c} href={`/search?department=${encodeURIComponent(c)}`} className="shrink-0 whitespace-nowrap hover:text-ink">
