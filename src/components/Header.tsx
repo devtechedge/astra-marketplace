@@ -16,15 +16,15 @@ export function Header() {
   return (
     <header data-testid="site-header" className="sticky top-0 z-40 border-b border-line bg-surface">
       <div className="container-page">
-        <div className="flex items-center gap-4 py-3 md:gap-6 md:py-4">
-          <Link href="/" className="flex items-center gap-2 font-display text-xl tracking-tight text-ink md:text-2xl">
+        <div className="flex min-w-0 items-center gap-2 py-3 sm:gap-4 md:gap-6 md:py-4">
+          <Link href="/" className="flex min-w-0 shrink items-center gap-1.5 font-display text-lg tracking-tight text-ink sm:gap-2 sm:text-xl md:text-2xl">
             <StarMark />
-            AstraMart
+            <span className="truncate">AstraMart</span>
           </Link>
-          <div className="hidden flex-1 md:block">
+          <div className="hidden min-w-0 flex-1 md:block">
             <SearchAutocomplete />
           </div>
-          <nav className="ml-auto flex items-center gap-4 text-[13px] md:gap-6">
+          <nav className="ml-auto flex shrink-0 items-center gap-2 text-[12px] sm:gap-4 sm:text-[13px] md:gap-6">
             <details className="relative">
               <summary className="text-ink">Account</summary>
               <div className="absolute right-0 z-50 mt-2 w-52 border border-line bg-surface py-2 text-[13px]">
@@ -40,7 +40,7 @@ export function Header() {
               </div>
             </details>
             <Link href="/orders" className="hidden sm:inline">Orders</Link>
-            <Link href="/cart" className="inline-flex items-center">
+            <Link href="/cart" className="inline-flex items-center gap-1">
               Cart
               <CartCount />
             </Link>
@@ -51,16 +51,16 @@ export function Header() {
           <SearchAutocomplete />
         </div>
       </div>
-      <div className="border-t border-line bg-paper">
-        <div className="container-page flex gap-6 overflow-x-auto py-2.5 text-[13px] text-muted">
-          <Link href="/deals" className="whitespace-nowrap hover:text-ink">Deals</Link>
+      <div className="border-t border-line bg-paper overflow-x-clip">
+        <div className="container-page flex min-w-0 gap-4 overflow-x-auto overscroll-x-contain py-2.5 text-[13px] text-muted sm:gap-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Link href="/deals" className="shrink-0 whitespace-nowrap hover:text-ink">Deals</Link>
           {categories.filter(c => c !== 'Gift cards').map(c => (
-            <Link key={c} href={`/search?department=${encodeURIComponent(c)}`} className="whitespace-nowrap hover:text-ink">
+            <Link key={c} href={`/search?department=${encodeURIComponent(c)}`} className="shrink-0 whitespace-nowrap hover:text-ink">
               {c}
             </Link>
           ))}
-          <Link href="/gift-cards" className="whitespace-nowrap hover:text-ink">Gift cards</Link>
-          <Link href="/help" className="whitespace-nowrap hover:text-ink">Help</Link>
+          <Link href="/gift-cards" className="shrink-0 whitespace-nowrap hover:text-ink">Gift cards</Link>
+          <Link href="/help" className="shrink-0 whitespace-nowrap hover:text-ink">Help</Link>
         </div>
       </div>
     </header>

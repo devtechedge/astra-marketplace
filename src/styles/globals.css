@@ -313,3 +313,9 @@ summary::-webkit-details-marker { display: none; }
 }
 .theme-toggle .icon.on { opacity: 1; transform: scale(1); filter: blur(0); }
 .theme-toggle .icon.off { opacity: 0; transform: scale(0.25); filter: blur(4px); }
+
+/* responsive overflow guard */
+html, body {
+  overflow-x: clip;
+  max-width: 100%;
+}
